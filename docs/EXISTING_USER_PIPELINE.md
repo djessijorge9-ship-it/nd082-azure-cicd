@@ -50,3 +50,17 @@ Azure Pipelines uses commits in the private Azure Repos repository. Importing a
 public GitHub snapshot does not establish a GitHub synchronization webhook.
 Record the actual Azure source commit and corresponding public source snapshot
 when updating the mirror, then retain the actual successful full-job run URL.
+
+## Verified full execution
+
+[Full run 3](https://dev.azure.com/nd082-dj-20261025/ND082-CICD/_build/results?buildId=3)
+completed successfully on 25 October 2026. Azure source
+`17bdad0f615507a8d0e68e1585df042dd7918ba9` corresponds to public snapshot
+`3fc837af903e12ce98f527539a11848cfe37ae1a`. All steps passed, including
+authentication/scope validation, make all, publication, Entra deployment,
+deployed prediction and removal of the temporary login cache.
+
+Official APIs independently read back Test Run 3 linked to Build 3, 48 individual
+Passed case results, and one app-source PipelineArtifact. The Build Summary UI's
+Get started/0 published presentation was inconsistent with those actual records.
+See evidence/azure-pipelines-run3-summary.json for the exact observation.

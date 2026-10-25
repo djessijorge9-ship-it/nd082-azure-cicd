@@ -1,9 +1,9 @@
 ID,Week of,Deliverable,Original hours,Revised hours,Status,Acceptance
 T1,2026-10-19,Requirements and starter inspection,0.5,0.5,Done,Current rubric captured and official starter preserved
-T2,2026-10-19,Validated application and model,1.5,2,Done,31 tests pass and model reproduced with matching sklearn
-T3,2026-10-26,Cloud Shell clone and make all,0.5,0.5,To Do,Capture genuine clone and make all plus separate test screenshots
-T4,2026-10-19,GitHub Actions CI,0.5,0.5,Done,Actual run 40173810937 passed with lint and 31 tests and artifacts
-T5,2026-10-26,Azure App Service deployment,0.5,0.5,To Do,Run commands.sh and capture deployed prediction and log stream
-T6,2026-11-02,Azure Pipelines automatic delivery,1,1.5,To Do,Use permitted existing connection and capture test and deployment runs
-T7,2026-11-02,Final evidence and plan,0.5,0.5,To Do,Trello populated but final cloud evidence and final-plan update pending
-T8,2026-11-09,Demo and project handoff,1,1,To Do,Clear narrated 1080p workflow video lasting 1 to 5 minutes
+T2,2026-10-19,Validated application and model,1.5,2,Done,48 tests pass and matching-version model reproduced
+T3,2026-10-26,Cloud Shell clone and make all,0.5,0.5,Done,Completed 25 Oct: actual Cloud Shell48 tests lint 10/10 package exit 0
+T4,2026-10-19,GitHub Actions CI,0.5,0.5,Done,Actual run 40189164258 succeeded at public source 3fc837
+T5,2026-10-26,Azure App Service deployment,0.5,0.5,Done,F1 live; HTTP health/single/batch/schema checks and matching runtime logs
+T6,2026-11-02,Attended Azure Pipelines delivery,1,1.5,Done,Manual queue/device bootstrap; run 3 passed fullCI48 published tests EntraCD smoke cleanup
+T7,2026-11-02,Final evidence and plan,0.5,0.5,To Do,Consolidate final screenshots and final-plan review
+T8,2026-11-09,Demo and project handoff,1,1,To Do,Clear narrated1080p workflow video lasting1 to5minutes

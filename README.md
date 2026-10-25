@@ -1,55 +1,42 @@
 # Building a CI/CD Pipeline
 
-This project delivers a Flask housing-prediction API through GitHub Actions continuous integration and Azure Pipelines continuous delivery to Linux Azure App Service. The repository includes actual application tests, source packaging, a Cloud Shell command sequence, and a project plan.
+This project delivers a tested Flask housing-prediction API to Linux Azure App Service. GitHub Actions supplies automatic CI. Azure Pipelines performs the complete build, test publication, packaging, Entra deployment and live prediction check after an attended training-user login.
 
-**Current state:** local implementation, real GitHub Actions builds, the populated Trello board, an actual Azure Cloud Shell build, and the F1 Linux App Service deployment are complete. Full Azure Pipelines delivery, final evidence and the demonstration video remain to be completed. The separately named hosted-capacity probe is CI only and does not establish continuous delivery.
+**Verified on 25 October 2026:** 48 tests and pylint 10/10 in Azure Cloud Shell; successful GitHub Actions CI; a free F1 App Service with genuine prediction/log evidence; and [Azure Pipelines run 3](https://dev.azure.com/nd082-dj-20261025/ND082-CICD/_build/results?buildId=3), including 48 published passing cases and the `app-source` artifact. Final screenshot assembly and the required narrated video remain in progress.
 
-The [live App Service](https://nd082-dj-cicd-20261025-ac51b6.azurewebsites.net)
-passed genuine health, single-row, batch and invalid-schema HTTP checks. The
-sample predicts approximately `30.211093795690005`; its first-row result remains
-unchanged in a batch. See [actual responses](evidence/azure-prediction.json) and
-[matching Azure runtime request-ID log lines](evidence/azure-prediction-log.txt).
-SCM and FTP basic publishing authentication both read back disabled.
-
-Azure Cloud Shell cloned commit `bf886ac3b409a93a4ad442b7688dcb5eb22385ac` and
-completed `make all`: 48 tests passed, pylint 10/10, runtime archive built, exit 0.
-The ephemeral no-storage session's screenshot and visible console excerpt are
-retained with the course evidence; its normal full-log export was unavailable.
-
-The latest local suite passes 48 tests, including seventeen cases for binding deployment
-to the exact verified training context, with pylint 10/10. A genuine read-only
-check against the dedicated Project 2 lab also passed. See the
-[guard validation record](evidence/training-context-guard.txt); it records no cloud
-deployment.
-
-Source repository: https://github.com/djessijorge9-ship-it/nd082-azure-cicd
+Source: https://github.com/djessijorge9-ship-it/nd082-azure-cicd
 
 [![Python continuous integration](https://github.com/djessijorge9-ship-it/nd082-azure-cicd/actions/workflows/ci.yml/badge.svg)](https://github.com/djessijorge9-ship-it/nd082-azure-cicd/actions/workflows/ci.yml)
 
-The badge reports the actual repository status. The [first real push-triggered run](https://github.com/djessijorge9-ship-it/nd082-azure-cicd/actions/runs/40173810937), for commit `49ec5e503c7ba5e65db020fb277571e4ebd9f902`, completed successfully on 25 October 2026 in 50 seconds. On the Linux hosted runner, all 31 tests passed and pylint scored 10/10. Test results and the deployment-source archive were published as artifacts.
+The badge reports the current repository status. [GitHub Actions run 40189164258](https://github.com/djessijorge9-ship-it/nd082-azure-cicd/actions/runs/40189164258) succeeded for source `3fc837af903e12ce98f527539a11848cfe37ae1a`, including 48 tests, lint and the runtime archive. The earlier screenshots below document the first successful 31-test build; the test suite was subsequently expanded to 48 cases.
 
-![Successful hosted GitHub Actions run](evidence/github-actions-run.png)
+![First successful GitHub Actions build](evidence/github-actions-run.png)
 
-![Passing badge in the actual repository README](evidence/github-actions-badge.png)
+![Passing badge in the actual repository](evidence/github-actions-badge.png)
 
-## Architecture
+## Architecture and actual delivery path
 
-![Application and delivery architecture](docs/architecture.svg)
+![Verified attended CI/CD architecture](docs/architecture.svg)
 
-Each commit to `main` or `master` triggers the GitHub lint/test/package workflow. The prepared Azure Pipeline is designed to trigger on those commits once connected in Azure DevOps. Pull requests run build validation; the deployment stage excludes pull requests. The Azure Pipeline is configured to publish JUnit results and deploy the tested source archive. Its Azure Resource Manager connection and App Service name must be configured as persistent pipeline variables, outside source code. Cloud Shell supplies the initial build/deployment and prediction/log checks.
+Commits and pull requests run GitHub lint, tests and packaging. A reviewed public snapshot is mirrored explicitly into private Azure Repos; this is not an automatic GitHub synchronization webhook. The verified Azure path uses `azure-pipelines-existing-user.yml`, Microsoft-hosted Ubuntu 24.04, and a manually queued run with `allowDeviceCodeBootstrap=true`. An operator authenticates the existing provided lab user through Microsoft's device-login page. An exact private scope guard then checks the user hash, tenant, subscription, writable group and approved target before any deployment.
+
+The same job runs `make all`, publishes JUnit results and the tested archive, deploys with Microsoft Entra authentication, checks a live prediction, and removes its job-local login cache/private context. SCM and FTP basic publishing authentication remain disabled. No service principal, PAT, service connection or extra agent VM is used.
+
+This is **attended delivery**, with manual authentication for each fresh worker. Source branch triggers exist, but their default opt-in is false; they do not establish unattended deployment. The retained `azure-pipelines.yml` service-connection alternative is unconfigured and its definition 1 is disabled. A separate [hosted-capacity probe, run 2](https://dev.azure.com/nd082-dj-20261025/ND082-CICD/_build/results?buildId=2), proves CI capacity only. Neither is substituted for the full run 3 delivery evidence. See [private-input and authentication details](docs/EXISTING_USER_PIPELINE.md).
+
+Run 3 used Azure Repos commit `17bdad0f615507a8d0e68e1585df042dd7918ba9`, corresponding to public source `3fc837af903e12ce98f527539a11848cfe37ae1a`. All job tasks succeeded. The [Test Run 3 results](https://dev.azure.com/nd082-dj-20261025/ND082-CICD/_TestManagement/Runs?runId=3&_a=runCharts) and individual-case API readback confirm 48/48 Passed and one `app-source` PipelineArtifact. The Build Summary UI displayed “Get started/0 published”; the [actual test/artifact readback](evidence/azure-pipelines-run3-summary.json) records that presentation discrepancy.
 
 ## Project plan
 
-The [original and revised project plan](docs/Project-Plan.xlsx) contains weekly deliverables and task estimates, the current status of each task, and annual/quarterly milestones. Its revised plan remains open until the cloud evidence has been collected. Estimates are planning assumptions, not claims about actual labour time. The [CSV task list](docs/PROJECT_PLAN.csv) offers a plain-text companion.
+The [Excel project plan](https://github.com/djessijorge9-ship-it/nd082-azure-cicd/blob/main/docs/Project-Plan.xlsx) contains the original/revised weekly task estimates, task states, and annual/quarterly milestones. A [local copy](docs/Project-Plan.xlsx) and [CSV companion](docs/PROJECT_PLAN.csv) are included. Original and revised estimates total 6 and 7 hours; these are planning assumptions, not recorded labour times. Some planned later-week tasks were completed early on 25 October.
 
-- [Trello board](https://trello.com/b/9wbc68TD/nd082-azure-ci-cd): publicly readable board with To Do, In Progress and Done lists and cards T1–T8 matching the workbook. Only board members can edit. T1, T2 and T4 are Done; cloud deployment and final demonstration tasks remain To Do.
-- Native spreadsheet link: not yet published. The modern Excel workbook is included in this repository; the rubric also permits a spreadsheet link or a `.xls` file.
+The [publicly readable Trello board](https://trello.com/b/9wbc68TD/nd082-azure-ci-cd) has To Do, In Progress and Done lists. T1–T6 are Done: requirements, application/model tests, Cloud Shell, GitHub CI, App Service and attended Azure delivery. T7 final evidence and T8 demonstration/handoff remain open. Only board members can edit. The older board screenshot below records the earlier CI checkpoint.
 
-![Populated project board after CI verification](evidence/trello-board.png)
+![Earlier populated project board](evidence/trello-board.png)
 
 ## Run locally
 
-Use Python 3.12 and a virtual environment. From the repository root on Bash:
+Use Python 3.12 in a virtual environment. From the repository root on Bash:
 
 ```bash
 python3 -m venv .venv
@@ -59,84 +46,48 @@ make test
 make run
 ```
 
-On Windows, activate `.venv\Scripts\Activate.ps1`. GNU Make is optional for local checks: run `python -m pip install -r requirements-dev.txt`, `python -m pylint app.py scripts tests`, `python -m pytest -v`, and `python scripts/package_app.py` directly.
+On Windows activate `.venv\Scripts\Activate.ps1`. Without Make, run `python -m pip install -r requirements-dev.txt`, `python -m pylint app.py scripts tests`, `python -m pytest -v`, and `python scripts/package_app.py`. In another terminal, run `python scripts/predict.py http://127.0.0.1:5000`.
 
-In another terminal:
+The sample predicts approximately `30.211093795690005`. Responses contain request IDs. `GET /health` checks model readiness. The API rejects missing/extra features, invalid JSON, non-finite values, mismatched batches, requests over 16 KiB and batches over 100 rows. Prediction logs contain values and request IDs without all input features.
 
-```bash
-python scripts/predict.py http://127.0.0.1:5000
-```
+### Model contract
 
-For the included sample, the expected prediction is approximately `30.211093795690005`. The response also contains a unique request ID. `GET /health` reports whether the model loaded. The service rejects missing/extra features, invalid JSON, non-finite values, mismatched batches, requests larger than 16 KiB, and batches larger than 100 rows. It logs prediction values and request IDs without logging all input features.
+The model uses `CHAS, RM, TAX, PTRATIO, B, LSTAT` in that order. The starter selected a linear model trained on raw features, so this service does not fit a scaler on inference data. The original per-request scaler reduced single rows to zero vectors and made predictions constant; this correction changes the obsolete starter example output.
 
-### Model contract and compatibility
+The original serialized model used scikit-learn 1.1.3 while the current starter pins 1.5.1. `scripts/train_model.py` reproduces the official notebook with the included CSV, six features, seed 7, and scikit-learn 1.5.1. The split is 404 training/102 test rows; actual held-out MSE is `39.95883743552935`. Versions, feature order, coefficients and data/model hashes are in `Housing_price_model/metadata.json`. This demonstrates reproducibility, not production model quality.
 
-The model uses exactly `CHAS, RM, TAX, PTRATIO, B, LSTAT` in that order. The starter's selected LinearRegression was trained on raw features, so the service does not fit a scaler on inference data. The original starter app did fit one on every request, which made a single-row request an all-zero vector. This correction changes the obsolete example prediction shown in the original README.
+The historical Boston dataset contains a racially constructed feature. It is retained only to reproduce this supplied educational exercise and is unsuitable for real housing decisions. A new application should use an appropriate dataset and versioned preprocessing.
 
-The supplied serialized model was created with scikit-learn 1.1.3, while the current starter pins 1.5.1. Instead of suppressing that compatibility warning, `scripts/train_model.py` reproduces the official notebook's six-feature split and training process using the included CSV, seed 7, and scikit-learn 1.5.1. Training uses 404 rows and testing uses 102 rows. Actual held-out MSE is `39.95883743552935`; this is a reproducibility result, not a claim of a production-quality model. Feature order, coefficients, versions, and dataset/model hashes are in `Housing_price_model/metadata.json`.
+## Cloud Shell and application evidence
 
-The historical Boston dataset contains a racially constructed feature. It is retained only to reproduce the supplied educational deployment exercise and is unsuitable for real housing decisions. A new application should use an appropriate dataset and a versioned training/preprocessing pipeline.
+Actual Cloud Shell clones of the public source completed `make all` with 48 passing tests, pylint 10/10, a 3,138-byte runtime archive and exit 0. The first retained build used `bf886ac3b409a93a4ad442b7688dcb5eb22385ac`; the final capture repeated it at the hosted-delivery source snapshot. Cloud Shell also returned the deployed sample prediction. These were ephemeral Bash sessions without a storage account. Screenshots and a visible console excerpt are retained; the normal full-log download failed and is not presented as available.
 
-## Azure Cloud Shell and delivery
+The [training App Service](https://nd082-dj-cicd-20261025-ac51b6.azurewebsites.net) passed real health, single-row, batch and invalid-schema HTTP checks. Its first-row prediction remains unchanged in a batch, while increasing RM changes the second result. See [actual HTTP responses](evidence/azure-prediction.json) and [matching Azure request-ID log lines](evidence/azure-prediction-log.txt). This temporary training app may be removed after evidence collection.
 
-The [cloud runbook](docs/CLOUD_RUNBOOK.md) details the full sequence. Use only the verified Project 2 training identity and its exact existing `Azuredevops` resource group, whose metadata location is `eastus`. App Service targets `eastus2` by default, with `centralus` and `northeurope` as lab-permitted alternatives. The Bash file [commands.sh](commands.sh) includes the required `az webapp up -n "$APP_NAME"` operation, the build/tests, HTTPS configuration, prediction, and log setup. Before any deployment, a read-only guard compares the active username hash, tenant, subscription and exact single resource group with an independently verified private context file, then checks the separate App Service region. Keep that context file outside the repository and evidence archive.
+The [cloud runbook](docs/CLOUD_RUNBOOK.md) records reproducible steps. `commands.sh` includes the required `az webapp up -n "$APP_NAME"` operation with basic publishing auth disabled. The writable group is exactly `Azuredevops`, metadata region `eastus`; the separately approved App Service target is `eastus2`. An exact service-managed DevOps billing group is read-only baseline metadata, never a deployment or cleanup target. Keep private scope files and tokens outside source/evidence archives.
 
-The scripts explicitly disable SCM and FTP basic publishing authentication.
-Deploy with current Azure CLI using Microsoft Entra authentication, or the
-prepared AzureWebApp pipeline task with an authorized connection; do not enable
-basic authentication or create publishing passwords as a workaround.
+## Validation and remaining evidence
 
-Creating the approved Azure DevOps organization added one service-managed billing
-resource group. The private context records only that exact auxiliary group's
-ID/name/location as read-only metadata. The guard rejects unknown or changed
-groups; deployment and cleanup still target only `Azuredevops`.
-
-```bash
-export AZURE_CONTEXT_FILE='/private/location/project02-approved-context.json'
-export AZURE_RESOURCE_GROUP='Azuredevops'
-export AZURE_LOCATION='eastus2'
-export APP_NAME='the-approved-unique-app-name'
-bash commands.sh
-export APP_URL="https://${APP_NAME}.azurewebsites.net"
-bash make_predict_azure_app.sh
-az webapp log tail --resource-group "$AZURE_RESOURCE_GROUP" --name "$APP_NAME"
-```
-
-Set the Azure DevOps pipeline variables `azureServiceConnection` and `webAppName` to permitted existing values. The training rules prohibit creating an Azure AD application/service principal. Stop if a permitted service connection or runner cannot be used; do not substitute a GitHub workflow for the required Azure Pipelines demonstration.
-
-The deployment archive is `dist/app.zip`, with only the runtime files at its root. `startup.txt` uses Gunicorn, access/error logs to stdout, two workers, and port 8000. Flask debug mode is disabled. Python 3.12 must be supported by the selected App Service runtime.
-
-## Validation and evidence
-
-Local validation records and hosted GitHub CI evidence are stored under `evidence/` with their scope clearly labelled. Current rubric evidence:
-
-| Required evidence | Status |
+| Evidence | Observed result |
 | --- | --- |
-| Project cloned into Azure Cloud Shell | Pending actual Cloud Shell run |
-| Passing `make all` and separate test output in Cloud Shell | Pending actual Cloud Shell run |
-| GitHub Actions successful build and badge screenshot | Verified successful run 40173810937; screenshots above |
-| App Service overview and running application | Pending Azure deployment |
-| Azure Pipelines successful test and deployment screenshots | Pending real pipeline run |
-| Prediction JSON in Azure Cloud Shell | Pending deployed prediction |
-| Prediction value in streamed application logs | Pending actual log stream |
-| Complete Trello board and final project plan | Board populated; final plan awaits cloud results |
-| Clear narrated 1080p demonstration, 1–5 minutes | Pending actual workflow recording |
+| Cloud Shell clone, build and tests | Actual 48 tests, lint 10/10, package and exit 0; screenshot/visible excerpt retained |
+| GitHub Actions and badge | Actual successful run 40189164258 for source 3fc837; earlier screenshots included |
+| App Service and predictions | F1 Linux deployment; genuine HTTP and runtime log records included |
+| Azure Pipelines full delivery | Run 3 succeeded; exact-scope authentication, 48 tests, JUnit, artifact, Entra deployment, smoke check and token-cache removal |
+| Published cases and artifact | Test Run 3/build 3: 48 cases, all Passed; one app-source PipelineArtifact, verified through official APIs |
+| Trello and estimates | T1–T6 Done; workbook/CSV updated; final evidence/handoff tasks open |
+| Clear narrated 1080p video, 1–5 minutes | Recording and final publication in progress |
 
-`evidence/status.json` records the current observed state; its empty URLs do not imply completed remote work. No screenshot has been fabricated or repurposed from a local environment as cloud evidence.
+`evidence/status.json` records the current evidence scope. No local test is relabeled as a remote build, and a prepared YAML file alone is not treated as executed delivery. The 48 local cases include seventeen training-context guard cases; the current lint score is 10/10.
 
-## Enhancements
+## Demonstration and enhancements
 
-Replace the legacy training dataset, include model/data drift checks and model version headers, add approved staging/rollback, pin dependency updates through automated review, and monitor availability and latency. These are future improvements, not completed work or authorization for ongoing Azure spend.
+YouTube demonstration link: pending final capture and publication. It must show Cloud Shell, GitHub Actions, actual Azure Pipelines deployment and deployed JSON prediction with readable text and clear narration.
 
-## Demo
+Future proposals are a suitable replacement dataset, drift/model-version checks, reviewed dependency updates, approved staging/rollback, and availability/latency monitoring. The 2027 roadmap is a proposal, not authorization for ongoing Azure spend.
 
-YouTube screencast: not yet recorded or published. It must show Cloud Shell login and build, GitHub Actions, Azure Pipelines deployment, and a successful deployed JSON prediction, with readable text and clear audio.
+## Sources
 
-## Sources and attribution
-
-- [Official Udacity starter](https://github.com/udacity/nd082-Azure-Cloud-DevOps-Starter-Code), commit `a239a572c6d6153317f29841973b49a9f78a84f9`. The included CSV and model training approach derive from `C2-AgileDevelopmentwithAzure/project/starter_files/flask-sklearn`. Original source is preserved separately for comparison. Its license is included as `LICENSE.udacity.md`.
-- [Azure Pipelines Python App Service tutorial](https://learn.microsoft.com/en-us/azure/devops/pipelines/ecosystems/python-webapp?view=azure-devops), checked 25 October 2026.
-- [Azure App Service Python deployment guide](https://learn.microsoft.com/en-us/azure/app-service/quickstart-python), checked 25 October 2026.
-- Current classroom project rubric, ND082 version 3.0.16, Building a CI/CD Pipeline, checked 25 October 2026.
-
-The full [existing-user hosted variant](docs/EXISTING_USER_PIPELINE.md) is prepared for an explicitly approved device-code authentication bootstrap, with private scope variables and a job-local CLI cache. It uses no new service principal, PAT, agent VM or Azure Resource Manager connection. Its first full CI/CD execution is still pending at this source snapshot.
+- [Official Udacity starter](https://github.com/udacity/nd082-Azure-Cloud-DevOps-Starter-Code), commit `a239a572c6d6153317f29841973b49a9f78a84f9`, directory `C2-AgileDevelopmentwithAzure/project/starter_files/flask-sklearn`. Original source is preserved separately; its license is included as `LICENSE.udacity.md`.
+- [Azure Pipelines Python App Service tutorial](https://learn.microsoft.com/en-us/azure/devops/pipelines/ecosystems/python-webapp?view=azure-devops) and [Azure App Service Python guide](https://learn.microsoft.com/en-us/azure/app-service/quickstart-python), checked 25 October 2026.
+- Current classroom rubric: ND082 version 3.0.16, Building a CI/CD Pipeline, checked 25 October 2026.

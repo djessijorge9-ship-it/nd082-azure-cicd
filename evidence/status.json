@@ -1,5 +1,5 @@
 {
-  "status": "cloud_shell_and_app_service_complete_full_pipeline_pending",
+  "status": "full_attended_delivery_verified_final_video_evidence_in_progress",
   "local_test_count": 48,
   "verified_training_context": {
     "resource_group": "Azuredevops",
@@ -8,15 +8,15 @@
     "read_only_guard_passed": true,
     "exact_auxiliary_billing_group_read_only": true
   },
-  "github_actions_run": "https://github.com/djessijorge9-ship-it/nd082-azure-cicd/actions/runs/40173810937",
-  "azure_pipeline_run": null,
+  "github_actions_run": "https://github.com/djessijorge9-ship-it/nd082-azure-cicd/actions/runs/40189164258",
+  "azure_pipeline_run": "https://dev.azure.com/nd082-dj-20261025/ND082-CICD/_build/results?buildId=3",
   "deployed_app_url": "https://nd082-dj-cicd-20261025-ac51b6.azurewebsites.net",
   "trello_board_url": "https://trello.com/b/9wbc68TD/nd082-azure-ci-cd",
   "trello_board_visibility": "Public read; board members edit",
-  "project_plan_spreadsheet_url": null,
+  "project_plan_spreadsheet_url": "https://github.com/djessijorge9-ship-it/nd082-azure-cicd/blob/main/docs/Project-Plan.xlsx",
   "screencast_url": null,
   "cloud_screenshots": [],
-  "note": "Do not treat local tests or prepared YAML as evidence of an actual cloud deployment.",
+  "note": "Actual full run and published cases verified through official APIs; Build Summary UI displayed a conflicting Get started/0 published presentation. Final video/capture assembly remains open.",
   "app_service_resources_created": true,
   "azure_devops_organization_created": true,
   "organization_billing_group_observed": true,
@@ -33,5 +33,32 @@
   },
   "hosted_capacity_probe_run": "https://dev.azure.com/nd082-dj-20261025/ND082-CICD/_build/results?buildId=2",
   "hosted_probe_published_test_cases": 48,
-  "hosted_probe_published_test_outcomes": "all Passed; read back through Test Runs and Results APIs"
+  "hosted_probe_published_test_outcomes": "all Passed; read back through Test Runs and Results APIs",
+  "azure_pipeline_authentication": "Manually queued; attended existing-user device bootstrap; job-local cache removed",
+  "azure_pipeline_public_source": "3fc837af903e12ce98f527539a11848cfe37ae1a",
+  "azure_pipeline_private_source": "17bdad0f615507a8d0e68e1585df042dd7918ba9",
+  "azure_pipeline_test_run_id": 3,
+  "azure_pipeline_published_test_cases": 48,
+  "azure_pipeline_published_case_outcomes": [
+    "Passed"
+  ],
+  "azure_pipeline_artifacts": [
+    "app-source"
+  ],
+  "original_service_connection_definition_disabled": true,
+  "unattended_delivery_demonstrated": false,
+  "task_states": {
+    "done": [
+      "T1",
+      "T2",
+      "T3",
+      "T4",
+      "T5",
+      "T6"
+    ],
+    "to_do": [
+      "T7",
+      "T8"
+    ]
+  }
 }
