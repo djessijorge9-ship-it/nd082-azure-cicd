@@ -1,0 +1,22 @@
+# Bounded CI-only capacity probe. This is not Azure deployment evidence.
+trigger: none
+pr: none
+pool:
+  vmImage: ubuntu-latest
+jobs:
+  - job: HostedCapacityProbe
+    timeoutInMinutes: 5
+    steps:
+      - checkout: self
+        persistCredentials: false
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: '3.12'
+      - script: make all
+        displayName: Install, lint, run all tests and package
+      - task: PublishTestResults@2
+        condition: succeededOrFailed()
+        inputs:
+          testResultsFormat: JUnit
+          testResultsFiles: test-results/junit.xml
+          failTaskOnFailedTests: true
