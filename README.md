@@ -2,7 +2,19 @@
 
 This project delivers a Flask housing-prediction API through GitHub Actions continuous integration and Azure Pipelines continuous delivery to Linux Azure App Service. The repository includes actual application tests, source packaging, a Cloud Shell command sequence, and a project plan.
 
-**Current state:** local implementation, validation, the first hosted GitHub Actions build, and the populated Trello board are complete. Azure Cloud Shell, App Service deployment, Azure Pipelines delivery, final cloud evidence, and the demonstration video remain to be completed. The successful GitHub build is not proof of an Azure App Service deployment.
+**Current state:** local implementation, real GitHub Actions builds, the populated Trello board, an actual Azure Cloud Shell build, and the F1 Linux App Service deployment are complete. Full Azure Pipelines delivery, final evidence and the demonstration video remain to be completed. The separately named hosted-capacity probe is CI only and does not establish continuous delivery.
+
+The [live App Service](https://nd082-dj-cicd-20261025-ac51b6.azurewebsites.net)
+passed genuine health, single-row, batch and invalid-schema HTTP checks. The
+sample predicts approximately `30.211093795690005`; its first-row result remains
+unchanged in a batch. See [actual responses](evidence/azure-prediction.json) and
+[matching Azure runtime request-ID log lines](evidence/azure-prediction-log.txt).
+SCM and FTP basic publishing authentication both read back disabled.
+
+Azure Cloud Shell cloned commit `bf886ac3b409a93a4ad442b7688dcb5eb22385ac` and
+completed `make all`: 48 tests passed, pylint 10/10, runtime archive built, exit 0.
+The ephemeral no-storage session's screenshot and visible console excerpt are
+retained with the course evidence; its normal full-log export was unavailable.
 
 The latest local suite passes 48 tests, including seventeen cases for binding deployment
 to the exact verified training context, with pylint 10/10. A genuine read-only
@@ -55,7 +67,7 @@ In another terminal:
 python scripts/predict.py http://127.0.0.1:5000
 ```
 
-For the included sample, the expected prediction is approximately `30.2110938017682`. The response also contains a unique request ID. `GET /health` reports whether the model loaded. The service rejects missing/extra features, invalid JSON, non-finite values, mismatched batches, requests larger than 16 KiB, and batches larger than 100 rows. It logs prediction values and request IDs without logging all input features.
+For the included sample, the expected prediction is approximately `30.211093795690005`. The response also contains a unique request ID. `GET /health` reports whether the model loaded. The service rejects missing/extra features, invalid JSON, non-finite values, mismatched batches, requests larger than 16 KiB, and batches larger than 100 rows. It logs prediction values and request IDs without logging all input features.
 
 ### Model contract and compatibility
 
@@ -126,3 +138,5 @@ YouTube screencast: not yet recorded or published. It must show Cloud Shell logi
 - [Azure Pipelines Python App Service tutorial](https://learn.microsoft.com/en-us/azure/devops/pipelines/ecosystems/python-webapp?view=azure-devops), checked 25 October 2026.
 - [Azure App Service Python deployment guide](https://learn.microsoft.com/en-us/azure/app-service/quickstart-python), checked 25 October 2026.
 - Current classroom project rubric, ND082 version 3.0.16, Building a CI/CD Pipeline, checked 25 October 2026.
+
+The full [existing-user hosted variant](docs/EXISTING_USER_PIPELINE.md) is prepared for an explicitly approved device-code authentication bootstrap, with private scope variables and a job-local CLI cache. It uses no new service principal, PAT, agent VM or Azure Resource Manager connection. Its first full CI/CD execution is still pending at this source snapshot.

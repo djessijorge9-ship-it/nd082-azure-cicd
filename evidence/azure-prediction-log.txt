@@ -1,0 +1,5 @@
+Actual Azure runtime log-stream lines matching the recorded HTTP request IDs:
+2026-10-25T11:25:32.1814135Z [2026-10-25 11:25:32,175] INFO in app: prediction request_id=0b3ecca05e7a47f29c95db593da89753 rows=1 values=[30.211093795690005]
+2026-10-25T11:25:32.6022664Z [2026-10-25 11:25:32,601] INFO in app: prediction request_id=783dbcddc9b442f6948e0e6812eaab13 rows=2 values=[30.211093795690005, 36.05738039217024]
+2026-10-25T11:25:32.1814135Z [2026-10-25 11:25:32,175] INFO in app: prediction request_id=0b3ecca05e7a47f29c95db593da89753 rows=1 values=[30.211093795690005]
+2026-10-25T11:25:32.6022664Z [2026-10-25 11:25:32,601] INFO in app: prediction request_id=783dbcddc9b442f6948e0e6812eaab13 rows=2 values=[30.211093795690005, 36.05738039217024]

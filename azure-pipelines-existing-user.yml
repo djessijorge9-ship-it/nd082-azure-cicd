@@ -1,0 +1,107 @@
+# Full CI/CD using an explicitly approved, interactive existing-user bootstrap.
+# Scope metadata is a private pipeline variable; no identities or credentials are in source.
+parameters:
+  - name: allowDeviceCodeBootstrap
+    type: boolean
+    default: false
+trigger:
+  branches:
+    include: [main]
+pr:
+  branches:
+    include: [main]
+pool:
+  vmImage: ubuntu-24.04
+variables:
+  azureConfigDir: '$(Agent.TempDirectory)/nd082-p2-azure'
+  azureContextFile: '$(Agent.TempDirectory)/nd082-p2-context.json'
+jobs:
+  - job: TestAndDeployWithExistingUser
+    timeoutInMinutes: 55
+    cancelTimeoutInMinutes: 2
+    steps:
+      - checkout: self
+        persistCredentials: false
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: '3.12'
+      - ${{ if eq(parameters.allowDeviceCodeBootstrap, true) }}:
+          - bash: |
+              set -euo pipefail
+              umask 077
+              mkdir -p "$AZURE_CONFIG_DIR"
+              python3 - <<'PY'
+              import base64, json, os
+              from pathlib import Path
+              context = json.loads(base64.b64decode(os.environ['APPROVED_CONTEXT_BASE64'], validate=True))
+              path = Path(os.environ['AZURE_CONTEXT_FILE'])
+              path.write_text(json.dumps(context), encoding='utf-8')
+              path.chmod(0o600)
+              PY
+              tenant_id="$(python3 -c 'import json,os; print(json.load(open(os.environ["AZURE_CONTEXT_FILE"]))["tenant_id"])')"
+              az login --tenant "$tenant_id" --use-device-code --output none
+              subscription_id="$(python3 -c 'import json,os; print(json.load(open(os.environ["AZURE_CONTEXT_FILE"]))["subscription_id"])')"
+              az account set --subscription "$subscription_id"
+              python3 scripts/verify_training_context.py
+            displayName: Approved existing-user device login and exact scope check
+            timeoutInMinutes: 15
+            env:
+              APPROVED_CONTEXT_BASE64: $(approvedContextBase64)
+              AZURE_CONFIG_DIR: $(azureConfigDir)
+              AZURE_CONTEXT_FILE: $(azureContextFile)
+              AZURE_RESOURCE_GROUP: Azuredevops
+              AZURE_LOCATION: eastus2
+              AZURE_CORE_LOGIN_EXPERIENCE_V2: 'off'
+      - ${{ else }}:
+          - bash: |
+              echo 'Device-code bootstrap must be explicitly approved and opted in for this hosted run.'
+              exit 2
+            displayName: Require explicit authorization bootstrap opt-in
+      - bash: |
+          set -euo pipefail
+          python3 -m venv .venv
+          source .venv/bin/activate
+          make all
+        displayName: Full install, lint, tests and runtime packaging
+      - task: PublishTestResults@2
+        condition: succeededOrFailed()
+        inputs:
+          testResultsFormat: JUnit
+          testResultsFiles: '$(System.DefaultWorkingDirectory)/test-results/junit.xml'
+          failTaskOnFailedTests: true
+          failTaskOnMissingResultsFile: true
+          failTaskOnFailureToPublishResults: true
+      - publish: dist/app.zip
+        artifact: app-source
+      - bash: |
+          set -euo pipefail
+          source .venv/bin/activate
+          bash scripts/deploy_existing_training_app.sh
+        displayName: Entra deployment and live prediction smoke test
+        condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+        env:
+          AZURE_CONFIG_DIR: $(azureConfigDir)
+          AZURE_CONTEXT_FILE: $(azureContextFile)
+          AZURE_RESOURCE_GROUP: Azuredevops
+          AZURE_LOCATION: eastus2
+          APP_NAME: $(webAppName)
+      - bash: |
+          python3 - <<'PY'
+          import os, shutil
+          from pathlib import Path
+          base = Path(os.environ['AGENT_TEMPDIRECTORY']).resolve()
+          for variable in ('AZURE_CONFIG_DIR', 'AZURE_CONTEXT_FILE'):
+              target = Path(os.environ[variable]).resolve()
+              if base not in target.parents:
+                  raise SystemExit('Refusing cleanup outside this hosted job temporary directory')
+              if target.is_dir():
+                  shutil.rmtree(target)
+              elif target.exists():
+                  target.unlink()
+          print('Removed job-local Azure authentication state.')
+          PY
+        displayName: Remove job-local Azure profile and private context
+        condition: always()
+        env:
+          AZURE_CONFIG_DIR: $(azureConfigDir)
+          AZURE_CONTEXT_FILE: $(azureContextFile)

@@ -19,4 +19,6 @@ az webapp config set --name "$APP_NAME" --resource-group "$AZURE_RESOURCE_GROUP"
   --startup-file "$(cat startup.txt)"
 az webapp deploy --name "$APP_NAME" --resource-group "$AZURE_RESOURCE_GROUP" \
   --src-path dist/app.zip --type zip
-python scripts/predict.py "https://${APP_NAME}.azurewebsites.net"
+app_host="$(az webapp show --name "$APP_NAME" --resource-group "$AZURE_RESOURCE_GROUP" \
+  --query defaultHostName --output tsv)"
+python scripts/predict.py "https://${app_host}"

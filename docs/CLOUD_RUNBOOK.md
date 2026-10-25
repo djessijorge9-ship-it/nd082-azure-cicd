@@ -75,7 +75,7 @@ az webapp log config --resource-group "$AZURE_RESOURCE_GROUP" --name "$APP_NAME"
 az webapp log tail --resource-group "$AZURE_RESOURCE_GROUP" --name "$APP_NAME"
 ```
 
-The model's expected prediction is approximately `30.2110938017682` for the sample. This
+The model's expected prediction is approximately `30.211093795690005` for the sample. This
 differs from the old README example because the starter fitted an inference-time
 scaler even though its selected linear model was trained on raw values. An actual
 prediction and matching request ID must appear in the app's log stream.

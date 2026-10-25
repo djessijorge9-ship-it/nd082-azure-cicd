@@ -1,0 +1,109 @@
+{
+  "url": "https://nd082-dj-cicd-20261025-ac51b6.azurewebsites.net",
+  "scope": "actual deployed F1 Linux App Service HTTP checks",
+  "basic_publishing_allow": {
+    "scm": false,
+    "ftp": false
+  },
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/health",
+      "status": 200,
+      "response": {
+        "features": [
+          "CHAS",
+          "RM",
+          "TAX",
+          "PTRATIO",
+          "B",
+          "LSTAT"
+        ],
+        "model": "Udacity LinearRegression",
+        "status": "ready"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/predict",
+      "status": 200,
+      "payload": {
+        "CHAS": {
+          "0": 0
+        },
+        "RM": {
+          "0": 6.575
+        },
+        "TAX": {
+          "0": 296.0
+        },
+        "PTRATIO": {
+          "0": 15.3
+        },
+        "B": {
+          "0": 396.9
+        },
+        "LSTAT": {
+          "0": 4.98
+        }
+      },
+      "response": {
+        "prediction": [
+          30.211093795690005
+        ],
+        "request_id": "0b3ecca05e7a47f29c95db593da89753"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/predict",
+      "status": 200,
+      "payload": {
+        "CHAS": [
+          0,
+          0
+        ],
+        "RM": [
+          6.575,
+          7.575
+        ],
+        "TAX": [
+          296.0,
+          296.0
+        ],
+        "PTRATIO": [
+          15.3,
+          15.3
+        ],
+        "B": [
+          396.9,
+          396.9
+        ],
+        "LSTAT": [
+          4.98,
+          4.98
+        ]
+      },
+      "response": {
+        "prediction": [
+          30.211093795690005,
+          36.05738039217024
+        ],
+        "request_id": "783dbcddc9b442f6948e0e6812eaab13"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/predict",
+      "status": 400,
+      "payload": {
+        "RM": [
+          6.575
+        ]
+      },
+      "response": {
+        "error": "JSON must contain exactly these columns: CHAS, RM, TAX, PTRATIO, B, LSTAT"
+      }
+    }
+  ]
+}

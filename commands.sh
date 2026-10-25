@@ -20,7 +20,9 @@ az webapp config appsettings set --name "$APP_NAME" --resource-group "$AZURE_RES
   --settings SCM_DO_BUILD_DURING_DEPLOYMENT=true
 az webapp config set --name "$APP_NAME" --resource-group "$AZURE_RESOURCE_GROUP" \
   --startup-file "$(cat startup.txt)"
-export APP_URL="https://${APP_NAME}.azurewebsites.net"
+app_host="$(az webapp show --name "$APP_NAME" --resource-group "$AZURE_RESOURCE_GROUP" \
+  --query defaultHostName --output tsv)"
+export APP_URL="https://${app_host}"
 bash make_predict_azure_app.sh
 az webapp log config --name "$APP_NAME" --resource-group "$AZURE_RESOURCE_GROUP" \
   --docker-container-logging filesystem

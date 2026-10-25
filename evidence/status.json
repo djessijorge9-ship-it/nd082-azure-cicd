@@ -1,5 +1,5 @@
 {
-  "status": "local_validation_and_github_ci_complete_cloud_delivery_pending",
+  "status": "cloud_shell_and_app_service_complete_full_pipeline_pending",
   "local_test_count": 48,
   "verified_training_context": {
     "resource_group": "Azuredevops",
@@ -10,14 +10,28 @@
   },
   "github_actions_run": "https://github.com/djessijorge9-ship-it/nd082-azure-cicd/actions/runs/40173810937",
   "azure_pipeline_run": null,
-  "deployed_app_url": null,
+  "deployed_app_url": "https://nd082-dj-cicd-20261025-ac51b6.azurewebsites.net",
   "trello_board_url": "https://trello.com/b/9wbc68TD/nd082-azure-ci-cd",
   "trello_board_visibility": "Public read; board members edit",
   "project_plan_spreadsheet_url": null,
   "screencast_url": null,
   "cloud_screenshots": [],
   "note": "Do not treat local tests or prepared YAML as evidence of an actual cloud deployment.",
-  "app_service_resources_created": false,
+  "app_service_resources_created": true,
   "azure_devops_organization_created": true,
-  "organization_billing_group_observed": true
+  "organization_billing_group_observed": true,
+  "basic_publishing_allow": {
+    "scm": false,
+    "ftp": false
+  },
+  "cloud_shell": {
+    "commit": "bf886ac3b409a93a4ad442b7688dcb5eb22385ac",
+    "pytest_passed": 48,
+    "pylint_score": 10,
+    "exit_code": 0,
+    "raw_log_export_available": false
+  },
+  "hosted_capacity_probe_run": "https://dev.azure.com/nd082-dj-20261025/ND082-CICD/_build/results?buildId=2",
+  "hosted_probe_published_test_cases": 48,
+  "hosted_probe_published_test_outcomes": "all Passed; read back through Test Runs and Results APIs"
 }
