@@ -88,5 +88,5 @@
   "case_outcomes": [
     "Passed"
   ],
-  "observed_ui_limitation": "Build Summary displayed Get started/0 published despite the completed Test API run and PipelineArtifact readback."
+  "observed_ui_limitation": "Earlier Build Summary presented Get started/0 published while APIs showed complete records. The final retained screenshot displays one published artifact and 100% passed."
 }

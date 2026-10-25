@@ -1,5 +1,5 @@
 {
-  "status": "historical_delivery_verified_owned_resources_removed_video_publication_pending",
+  "status": "preparation_complete_historical_delivery_and_cleanup_verified",
   "local_test_count": 48,
   "verified_training_context": {
     "resource_group": "Azuredevops",
@@ -13,9 +13,9 @@
   "trello_board_url": "https://trello.com/b/9wbc68TD/nd082-azure-ci-cd",
   "trello_board_visibility": "Public read; board members edit",
   "project_plan_spreadsheet_url": "https://github.com/djessijorge9-ship-it/nd082-azure-cicd/blob/main/docs/Project-Plan.xlsx",
-  "screencast_url": null,
+  "screencast_url": "https://youtu.be/KyiWE4R-WMA",
   "cloud_screenshots": [],
-  "note": "Historical full run and published cases verified; owned app/free plan removed after all evidence. Video rendered; authorized publication and final student handoff remain pending.",
+  "note": "All prepared deliverables complete. Actual historical deployment/test evidence retained and owned app/F1plan removed. Cloud captures accompany the private course ZIP; public source and result/video links retained. Student personally handles declarations/final submission.",
   "app_service_resources_created": true,
   "azure_devops_organization_created": true,
   "organization_billing_group_observed": true,
@@ -54,11 +54,10 @@
       "T4",
       "T5",
       "T6",
-      "T7"
-    ],
-    "to_do": [
+      "T7",
       "T8"
-    ]
+    ],
+    "to_do": []
   },
   "historical_deployed_app_url": "https://nd082-dj-cicd-20261025-ac51b6.azurewebsites.net",
   "endpoint_currently_available": false,
@@ -85,5 +84,9 @@
     "height": 1080,
     "format": "narrated screenshot walkthrough",
     "full_decode_validation": "pass"
-  }
+  },
+  "screencast_visibility": "Unlisted",
+  "screencast_title": "ND082 Azure CI/CD: Cloud Shell to Prediction",
+  "youtube_publication_verified": true,
+  "trello_verified_done_count": 8
 }
