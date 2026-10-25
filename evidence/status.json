@@ -1,5 +1,5 @@
 {
-  "status": "full_attended_delivery_verified_final_video_evidence_in_progress",
+  "status": "historical_delivery_verified_owned_resources_removed_video_publication_pending",
   "local_test_count": 48,
   "verified_training_context": {
     "resource_group": "Azuredevops",
@@ -10,13 +10,12 @@
   },
   "github_actions_run": "https://github.com/djessijorge9-ship-it/nd082-azure-cicd/actions/runs/40189164258",
   "azure_pipeline_run": "https://dev.azure.com/nd082-dj-20261025/ND082-CICD/_build/results?buildId=3",
-  "deployed_app_url": "https://nd082-dj-cicd-20261025-ac51b6.azurewebsites.net",
   "trello_board_url": "https://trello.com/b/9wbc68TD/nd082-azure-ci-cd",
   "trello_board_visibility": "Public read; board members edit",
   "project_plan_spreadsheet_url": "https://github.com/djessijorge9-ship-it/nd082-azure-cicd/blob/main/docs/Project-Plan.xlsx",
   "screencast_url": null,
   "cloud_screenshots": [],
-  "note": "Actual full run and published cases verified through official APIs; Build Summary UI displayed a conflicting Get started/0 published presentation. Final video/capture assembly remains open.",
+  "note": "Historical full run and published cases verified; owned app/free plan removed after all evidence. Video rendered; authorized publication and final student handoff remain pending.",
   "app_service_resources_created": true,
   "azure_devops_organization_created": true,
   "organization_billing_group_observed": true,
@@ -54,11 +53,37 @@
       "T3",
       "T4",
       "T5",
-      "T6"
+      "T6",
+      "T7"
     ],
     "to_do": [
-      "T7",
       "T8"
     ]
+  },
+  "historical_deployed_app_url": "https://nd082-dj-cicd-20261025-ac51b6.azurewebsites.net",
+  "endpoint_currently_available": false,
+  "cleanup": {
+    "completed_utc": "2026-10-25T12:41:57.041425+00:00",
+    "status": "owned_app_and_free_plan_removed_after_evidence",
+    "app": "nd082-dj-cicd-20261025-ac51b6",
+    "plan": "nd082-dj-cicd-20261025-ac51b6-plan",
+    "sku": "F1",
+    "region": "eastus2",
+    "historical_application_url": "https://nd082-dj-cicd-20261025-ac51b6.azurewebsites.net",
+    "app_absent_on_resource_readback": true,
+    "plan_absent_on_resource_readback": true,
+    "sole_plan_usage_verified_before_removal": true,
+    "other_resource_inventory_unchanged": true,
+    "resource_groups_unchanged": true,
+    "training_baseline_and_auxiliary_billing_group_untouched": true,
+    "repositories_organization_trello_and_saved_evidence_retained": true
+  },
+  "course_submission_screenshots_assembled": true,
+  "video_render": {
+    "duration_seconds": 184.3,
+    "width": 1920,
+    "height": 1080,
+    "format": "narrated screenshot walkthrough",
+    "full_decode_validation": "pass"
   }
 }

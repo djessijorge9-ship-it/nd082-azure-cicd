@@ -2,7 +2,7 @@
 
 This project delivers a tested Flask housing-prediction API to Linux Azure App Service. GitHub Actions supplies automatic CI. Azure Pipelines performs the complete build, test publication, packaging, Entra deployment and live prediction check after an attended training-user login.
 
-**Verified on 25 October 2026:** 48 tests and pylint 10/10 in Azure Cloud Shell; successful GitHub Actions CI; a free F1 App Service with genuine prediction/log evidence; and [Azure Pipelines run 3](https://dev.azure.com/nd082-dj-20261025/ND082-CICD/_build/results?buildId=3), including 48 published passing cases and the `app-source` artifact. Final screenshot assembly and the required narrated video remain in progress.
+**Verified on 25 October 2026:** 48 tests and pylint 10/10 in Azure Cloud Shell; successful GitHub Actions CI; a historical free F1 App Service deployment with genuine prediction/log evidence; and [Azure Pipelines run 3](https://dev.azure.com/nd082-dj-20261025/ND082-CICD/_build/results?buildId=3), including 48 published passing cases and the `app-source` artifact. The actual screenshot assembly and a validated 184.30-second narrated 1080p walkthrough are complete. Video publication and final handoff remain open.
 
 Source: https://github.com/djessijorge9-ship-it/nd082-azure-cicd
 
@@ -30,7 +30,7 @@ Run 3 used Azure Repos commit `17bdad0f615507a8d0e68e1585df042dd7918ba9`, corres
 
 The [Excel project plan](https://github.com/djessijorge9-ship-it/nd082-azure-cicd/blob/main/docs/Project-Plan.xlsx) contains the original/revised weekly task estimates, task states, and annual/quarterly milestones. A [local copy](docs/Project-Plan.xlsx) and [CSV companion](docs/PROJECT_PLAN.csv) are included. Original and revised estimates total 6 and 7 hours; these are planning assumptions, not recorded labour times. Some planned later-week tasks were completed early on 25 October.
 
-The [publicly readable Trello board](https://trello.com/b/9wbc68TD/nd082-azure-ci-cd) has To Do, In Progress and Done lists. T1–T6 are Done: requirements, application/model tests, Cloud Shell, GitHub CI, App Service and attended Azure delivery. T7 final evidence and T8 demonstration/handoff remain open. Only board members can edit. The older board screenshot below records the earlier CI checkpoint.
+The [publicly readable Trello board](https://trello.com/b/9wbc68TD/nd082-azure-ci-cd) has To Do, In Progress and Done lists. T1–T7 are Done: requirements, application/model tests, Cloud Shell, GitHub CI, App Service, attended Azure delivery and final evidence assembly. T8 video publication/handoff remains open. Only board members can edit. The older board screenshot below records the earlier CI checkpoint.
 
 ![Earlier populated project board](evidence/trello-board.png)
 
@@ -62,7 +62,7 @@ The historical Boston dataset contains a racially constructed feature. It is ret
 
 Actual Cloud Shell clones of the public source completed `make all` with 48 passing tests, pylint 10/10, a 3,138-byte runtime archive and exit 0. The first retained build used `bf886ac3b409a93a4ad442b7688dcb5eb22385ac`; the final capture repeated it at the hosted-delivery source snapshot. Cloud Shell also returned the deployed sample prediction. These were ephemeral Bash sessions without a storage account. Screenshots and a visible console excerpt are retained; the normal full-log download failed and is not presented as available.
 
-The [training App Service](https://nd082-dj-cicd-20261025-ac51b6.azurewebsites.net) passed real health, single-row, batch and invalid-schema HTTP checks. Its first-row prediction remains unchanged in a batch, while increasing RM changes the second result. See [actual HTTP responses](evidence/azure-prediction.json) and [matching Azure request-ID log lines](evidence/azure-prediction-log.txt). This temporary training app may be removed after evidence collection.
+The historical training App Service passed real health, single-row, batch and invalid-schema HTTP checks. Its first-row prediction remains unchanged in a batch, while increasing RM changes the second result. See [actual HTTP responses](evidence/azure-prediction.json) and [matching Azure request-ID log lines](evidence/azure-prediction-log.txt). The exact owned app and its sole-use F1 plan were removed after all evidence was saved, at 12:41:57 UTC on 25 October 2026. The former endpoint is no longer available. [Cleanup readback](evidence/azure-cleanup.json) confirms both targets absent, other resource inventory unchanged, and training groups/billing metadata preserved.
 
 The [cloud runbook](docs/CLOUD_RUNBOOK.md) records reproducible steps. `commands.sh` includes the required `az webapp up -n "$APP_NAME"` operation with basic publishing auth disabled. The writable group is exactly `Azuredevops`, metadata region `eastus`; the separately approved App Service target is `eastus2`. An exact service-managed DevOps billing group is read-only baseline metadata, never a deployment or cleanup target. Keep private scope files and tokens outside source/evidence archives.
 
@@ -72,17 +72,17 @@ The [cloud runbook](docs/CLOUD_RUNBOOK.md) records reproducible steps. `commands
 | --- | --- |
 | Cloud Shell clone, build and tests | Actual 48 tests, lint 10/10, package and exit 0; screenshot/visible excerpt retained |
 | GitHub Actions and badge | Actual successful run 40189164258 for source 3fc837; earlier screenshots included |
-| App Service and predictions | F1 Linux deployment; genuine HTTP and runtime log records included |
+| App Service and predictions | Historical F1 Linux deployment; real HTTP/log evidence retained; owned app/plan removed after evidence |
 | Azure Pipelines full delivery | Run 3 succeeded; exact-scope authentication, 48 tests, JUnit, artifact, Entra deployment, smoke check and token-cache removal |
 | Published cases and artifact | Test Run 3/build 3: 48 cases, all Passed; one app-source PipelineArtifact, verified through official APIs |
-| Trello and estimates | T1–T6 Done; workbook/CSV updated; final evidence/handoff tasks open |
+| Trello and estimates | T1–T7 Done; workbook/CSV updated; video publication/handoff remains open |
 | Clear narrated 1080p video, 1–5 minutes | Recording and final publication in progress |
 
 `evidence/status.json` records the current evidence scope. No local test is relabeled as a remote build, and a prepared YAML file alone is not treated as executed delivery. The 48 local cases include seventeen training-context guard cases; the current lint score is 10/10.
 
 ## Demonstration and enhancements
 
-YouTube demonstration link: pending final capture and publication. It must show Cloud Shell, GitHub Actions, actual Azure Pipelines deployment and deployed JSON prediction with readable text and clear narration.
+YouTube demonstration link: pending authorized publication. The 184.30-second 1920×1080 narrated screenshot walkthrough has passed full decode/audio validation; actual capture images accompany the course submission. It must show Cloud Shell, GitHub Actions, actual Azure Pipelines deployment and deployed JSON prediction with readable text and clear narration.
 
 Future proposals are a suitable replacement dataset, drift/model-version checks, reviewed dependency updates, approved staging/rollback, and availability/latency monitoring. The 2027 roadmap is a proposal, not authorization for ongoing Azure spend.
 

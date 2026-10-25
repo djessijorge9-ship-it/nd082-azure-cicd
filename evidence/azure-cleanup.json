@@ -1,0 +1,16 @@
+{
+  "completed_utc": "2026-10-25T12:41:57.041425+00:00",
+  "status": "owned_app_and_free_plan_removed_after_evidence",
+  "app": "nd082-dj-cicd-20261025-ac51b6",
+  "plan": "nd082-dj-cicd-20261025-ac51b6-plan",
+  "sku": "F1",
+  "region": "eastus2",
+  "historical_application_url": "https://nd082-dj-cicd-20261025-ac51b6.azurewebsites.net",
+  "app_absent_on_resource_readback": true,
+  "plan_absent_on_resource_readback": true,
+  "sole_plan_usage_verified_before_removal": true,
+  "other_resource_inventory_unchanged": true,
+  "resource_groups_unchanged": true,
+  "training_baseline_and_auxiliary_billing_group_untouched": true,
+  "repositories_organization_trello_and_saved_evidence_retained": true
+}
