@@ -4,6 +4,12 @@ This project delivers a Flask housing-prediction API through GitHub Actions cont
 
 **Current state:** local implementation, validation, the first hosted GitHub Actions build, and the populated Trello board are complete. Azure Cloud Shell, App Service deployment, Azure Pipelines delivery, final cloud evidence, and the demonstration video remain to be completed. The successful GitHub build is not proof of an Azure App Service deployment.
 
+The latest local suite passes 43 tests, including twelve cases for binding deployment
+to the exact verified training context, with pylint 10/10. A genuine read-only
+check against the dedicated Project 2 lab also passed. See the
+[guard validation record](evidence/training-context-guard.txt); it records no cloud
+deployment.
+
 Source repository: https://github.com/djessijorge9-ship-it/nd082-azure-cicd
 
 [![Python continuous integration](https://github.com/djessijorge9-ship-it/nd082-azure-cicd/actions/workflows/ci.yml/badge.svg)](https://github.com/djessijorge9-ship-it/nd082-azure-cicd/actions/workflows/ci.yml)
@@ -61,10 +67,16 @@ The historical Boston dataset contains a racially constructed feature. It is ret
 
 ## Azure Cloud Shell and delivery
 
-The [cloud runbook](docs/CLOUD_RUNBOOK.md) details the full sequence. Use only the provided training subscription and existing `cloud-demo-*` resource group. The Bash file [commands.sh](commands.sh) includes the required `az webapp up -n "$APP_NAME"` operation, the build/tests, HTTPS configuration, prediction, and log setup. It refuses an unrecognized training-group prefix or region. Run it only after setting the actual approved resource names.
+The [cloud runbook](docs/CLOUD_RUNBOOK.md) details the full sequence. Use only the verified Project 2 training identity and its exact existing `Azuredevops` resource group, whose metadata location is `eastus`. App Service targets `eastus2` by default, with `centralus` and `northeurope` as lab-permitted alternatives. The Bash file [commands.sh](commands.sh) includes the required `az webapp up -n "$APP_NAME"` operation, the build/tests, HTTPS configuration, prediction, and log setup. Before any deployment, a read-only guard compares the active username hash, tenant, subscription and exact single resource group with an independently verified private context file, then checks the separate App Service region. Keep that context file outside the repository and evidence archive.
+
+The scripts explicitly disable SCM and FTP basic publishing authentication.
+Deploy with current Azure CLI using Microsoft Entra authentication, or the
+prepared AzureWebApp pipeline task with an authorized connection; do not enable
+basic authentication or create publishing passwords as a workaround.
 
 ```bash
-export AZURE_RESOURCE_GROUP='the-existing-cloud-demo-group'
+export AZURE_CONTEXT_FILE='/private/location/project02-approved-context.json'
+export AZURE_RESOURCE_GROUP='Azuredevops'
 export AZURE_LOCATION='eastus2'
 export APP_NAME='the-approved-unique-app-name'
 bash commands.sh

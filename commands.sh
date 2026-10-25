@@ -2,13 +2,11 @@
 # Prepared Cloud Shell command sequence. Record actual output when it is run.
 set -euo pipefail
 cd "$(dirname "$0")"
-: "${AZURE_RESOURCE_GROUP:?Set the existing Udacity cloud-demo resource group}"
-: "${AZURE_LOCATION:?Set eastus2, centralus or northeurope}"
+: "${AZURE_CONTEXT_FILE:?Set the private verified Project 2 lab context JSON}"
+: "${AZURE_RESOURCE_GROUP:?Set the existing Udacity Azuredevops resource group}"
+export AZURE_LOCATION="${AZURE_LOCATION:-eastus2}"
 : "${APP_NAME:?Set the approved globally unique App Service name}"
-[[ "$AZURE_RESOURCE_GROUP" == cloud-demo-* ]] || { echo 'Refusing non-training group'; exit 2; }
-[[ "$AZURE_LOCATION" =~ ^(eastus2|centralus|northeurope)$ ]] || { echo 'Region not allowed'; exit 2; }
-az account show --query '{name:name,id:id}' --output table
-az group show --name "$AZURE_RESOURCE_GROUP" --query name --output tsv
+python3 scripts/verify_training_context.py
 python3 -m venv .venv
 source .venv/bin/activate
 make all
@@ -16,7 +14,7 @@ make test
 # Explicit group and F1 prevent silently selecting a default personal group/tier.
 az webapp up -n "$APP_NAME" --resource-group "$AZURE_RESOURCE_GROUP" \
   --plan "${APP_NAME}-plan" --location "$AZURE_LOCATION" --sku F1 \
-  --runtime 'PYTHON:3.12' --os-type Linux
+  --runtime 'PYTHON:3.12' --os-type Linux --basic-auth Disabled
 az webapp update --name "$APP_NAME" --resource-group "$AZURE_RESOURCE_GROUP" --https-only true
 az webapp config appsettings set --name "$APP_NAME" --resource-group "$AZURE_RESOURCE_GROUP" \
   --settings SCM_DO_BUILD_DURING_DEPLOYMENT=true

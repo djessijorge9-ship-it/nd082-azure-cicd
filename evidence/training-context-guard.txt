@@ -1,0 +1,26 @@
+Scope: local tests and an actual read-only check of the provided Project 2 Azure lab.
+Date: 2026-10-25
+
+Local pytest after adding the context guard:
+43 passed in 8.59s
+
+Pylint:
+Your code has been rated at 10.00/10
+
+Git Bash syntax-only check of commands.sh and scripts/deploy_training.sh:
+Exit 0. These scripts were not executed for deployment.
+
+Live read-only guard result using the isolated Project 2 CLI profile:
+{"verified": true, "resource_group": "Azuredevops", "resource_group_location": "eastus", "app_service_location": "eastus2"}
+
+The guard compared the active username hash, tenant, subscription and exact one
+assigned resource group with the independently captured private context. Tests
+also rejected mismatched users, tenants, subscriptions, groups, group IDs and
+regions, extra groups, an unverified context and a stale approved context.
+
+The initial local live-check attempts could not resolve the newly installed Azure
+CLI launcher. The helper was corrected to resolve the installed executable on
+PATH. The final live check above passed. No Azure resource creation, deployment,
+service-connection creation or Azure Pipelines run is represented by this result.
+
+The guard separately permits the lab-recommended App Service target regions East US 2, Central US and North Europe; East US 2 is the default. It still checks the exact resource group metadata location East US. SCM/FTP basic publishing authentication is explicitly disabled in both prepared creation paths.

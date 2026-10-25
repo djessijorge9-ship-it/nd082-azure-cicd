@@ -1,20 +1,34 @@
 # Cloud execution runbook
 
 These are executable preparation instructions, not a record of completed Azure work.
-Use only the Udacity-provided training subscription and existing `cloud-demo-*`
-resource group. Do not create a resource group, Azure AD application, service
+Use only the verified Project 2 Udacity training identity and its exact existing
+`Azuredevops` resource group, whose metadata location is `eastus`. This live
+assignment differs from the older course introduction's `cloud-demo-*` prefix.
+The group's metadata location does not determine where App Service is deployed:
+use the lab-recommended target `eastus2` by default; `centralus` and `northeurope`
+are permitted alternatives. Do not create a resource group, Azure AD application, service
 principal, or role assignment in that shared subscription. Do not use a personal
 Azure subscription to bypass training limits.
 
 ## Required inputs
 
 - Existing source repository URL and authorized GitHub / Azure DevOps connection.
-- Existing training resource group, subscription, permitted region (East US 2,
-  Central US, or North Europe), and globally unique App Service name.
+- The private `project02-approved-context.json` captured by independent read-only
+  lab discovery, transferred privately to the execution environment. It contains
+  the verified username hash, tenant, subscription and exact single resource
+  group. Keep this file outside the repository and evidence archive.
+- The exact existing training resource group `Azuredevops` (metadata in `eastus`),
+  an App Service target region (`eastus2` by default), and an approved globally
+  unique App Service name.
 - A permitted existing Azure Resource Manager service connection scoped to the
   training resource group. Automatic workload identity setup still creates an
   application registration: do not use it when lab rules prohibit that action.
 - Azure DevOps hosted-runner capacity or an authorized existing self-hosted agent.
+- Current official Azure CLI (the verified local version is 2.87.0), with Microsoft
+  Entra authentication. The prepared creation commands explicitly disable SCM
+  and FTP basic publishing authentication; do not enable it or obtain publishing
+  passwords to bypass deployment failures. Use Entra/OAuth-supported CLI or the
+  AzureWebApp task with an authorized existing service connection.
 
 ## Cloud Shell and initial App Service
 
@@ -29,12 +43,14 @@ make all
 make test
 ```
 
-Capture the clone output and the two genuine test outputs. Inspect the currently
-selected subscription and the existing resource group before provisioning:
+Capture the clone output and the two genuine test outputs. Bind the active CLI
+session to the independently verified private context before provisioning:
 
 ```bash
-az account show --query '{name:name,id:id}' --output table
-az group show --name "$AZURE_RESOURCE_GROUP" --query '{name:name,location:location}'
+export AZURE_CONTEXT_FILE='/private/location/project02-approved-context.json'
+export AZURE_RESOURCE_GROUP='Azuredevops'
+export AZURE_LOCATION='eastus2' # App Service target, not the group's metadata location
+python3 scripts/verify_training_context.py
 az webapp list-runtimes --os-type linux --runtime python --output table
 ```
 
@@ -42,10 +58,10 @@ Use the approved region and free F1 plan if supported by the training subscripti
 If F1 is not supported, stop and obtain a permitted training-tier decision; do not
 silently fall back to a paid personal plan. The script `commands.sh`
 requires explicit environment inputs and creates resources only in that group.
+Both creation paths pass `--basic-auth Disabled`. Confirm the `scm` and `ftp`
+basic-publishing policies remain false before collecting final deployment evidence.
 
 ```bash
-export AZURE_RESOURCE_GROUP='the-existing-training-group'
-export AZURE_LOCATION='eastus2'
 export APP_NAME='the-approved-unique-name'
 bash commands.sh
 export APP_URL="https://${APP_NAME}.azurewebsites.net"
@@ -55,7 +71,7 @@ az webapp log config --resource-group "$AZURE_RESOURCE_GROUP" --name "$APP_NAME"
 az webapp log tail --resource-group "$AZURE_RESOURCE_GROUP" --name "$APP_NAME"
 ```
 
-The deployed model predicts approximately `30.2110938017682` for the sample. This
+The model's expected prediction is approximately `30.2110938017682` for the sample. This
 differs from the old README example because the starter fitted an inference-time
 scaler even though its selected linear model was trained on raw values. An actual
 prediction and matching request ID must appear in the app's log stream.
