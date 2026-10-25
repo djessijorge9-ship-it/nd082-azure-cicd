@@ -1,8 +1,9 @@
-Task,Original plan hours,Original sequence,Current status,Actual result / remaining acceptance
-Inspect requirements and official starter,0.5,1,Complete,Official starter preserved at commit a239a572c6d6153317f29841973b49a9f78a84f9
-Correct app contract and build real tests,1.5,2,Complete,Raw six-feature inference and request validation implemented; test logs recorded
-Prepare GitHub continuous integration,0.5,3,Prepared not executed,Workflow must run in an authorized repository
-Prepare Azure Pipeline and deployment archive,1,4,Prepared not executed,Requires permitted existing service connection and runner capacity
-Deploy and verify in Azure Cloud Shell,1,5,Pending,Actual App Service URL and cloud screenshots required
-Automatic pipeline deployment and load test,1,6,Pending,Actual run links outputs and logs required
-Update final plan and recording,0.5,7,Pending,Actual Trello spreadsheet and video links required
+ID,Week of,Deliverable,Original hours,Revised hours,Status,Acceptance
+T1,2026-10-19,Requirements and starter inspection,0.5,0.5,Done,Current rubric captured and official starter preserved
+T2,2026-10-19,Validated application and model,1.5,2,Done,31 tests pass and model reproduced with matching sklearn
+T3,2026-10-26,Cloud Shell clone and make all,0.5,0.5,To Do,Capture genuine clone and make all plus separate test screenshots
+T4,2026-10-19,GitHub Actions CI,0.5,0.5,Done,Actual run 40173810937 passed with lint and 31 tests and artifacts
+T5,2026-10-26,Azure App Service deployment,0.5,0.5,To Do,Run commands.sh and capture deployed prediction and log stream
+T6,2026-11-02,Azure Pipelines automatic delivery,1,1.5,To Do,Use permitted existing connection and capture test and deployment runs
+T7,2026-11-02,Final evidence and plan,0.5,0.5,To Do,Trello populated but final cloud evidence and final-plan update pending
+T8,2026-11-09,Demo and project handoff,1,1,To Do,Clear narrated 1080p workflow video lasting 1 to 5 minutes

@@ -2,26 +2,32 @@
 
 This project delivers a Flask housing-prediction API through GitHub Actions continuous integration and Azure Pipelines continuous delivery to Linux Azure App Service. The repository includes actual application tests, source packaging, a Cloud Shell command sequence, and a project plan.
 
-**Current state:** local implementation and validation are complete. Cloud deployment, remote CI/CD run evidence, Trello planning, and the demonstration video remain to be completed. A workflow file or local green test run is not proof of an Azure deployment.
+**Current state:** local implementation, validation, the first hosted GitHub Actions build, and the populated Trello board are complete. Azure Cloud Shell, App Service deployment, Azure Pipelines delivery, final cloud evidence, and the demonstration video remain to be completed. The successful GitHub build is not proof of an Azure App Service deployment.
 
 Source repository: https://github.com/djessijorge9-ship-it/nd082-azure-cicd
 
 [![Python continuous integration](https://github.com/djessijorge9-ship-it/nd082-azure-cicd/actions/workflows/ci.yml/badge.svg)](https://github.com/djessijorge9-ship-it/nd082-azure-cicd/actions/workflows/ci.yml)
 
-The badge reports the actual repository status. Its required screenshot will be added after a real remote run.
+The badge reports the actual repository status. The [first real push-triggered run](https://github.com/djessijorge9-ship-it/nd082-azure-cicd/actions/runs/40173810937), for commit `49ec5e503c7ba5e65db020fb277571e4ebd9f902`, completed successfully on 25 October 2026 in 50 seconds. On the Linux hosted runner, all 31 tests passed and pylint scored 10/10. Test results and the deployment-source archive were published as artifacts.
+
+![Successful hosted GitHub Actions run](evidence/github-actions-run.png)
+
+![Passing badge in the actual repository README](evidence/github-actions-badge.png)
 
 ## Architecture
 
 ![Application and delivery architecture](docs/architecture.svg)
 
-Each commit to `main` or `master` triggers the GitHub lint/test/package workflow and the Azure Pipeline. Pull requests run build validation; the deployment stage excludes pull requests. The Azure Pipeline publishes JUnit results and deploys the tested source archive. Its Azure Resource Manager connection and App Service name are configured as persistent pipeline variables, outside source code. Cloud Shell provides the initial build/deployment and prediction/log checks.
+Each commit to `main` or `master` triggers the GitHub lint/test/package workflow. The prepared Azure Pipeline is designed to trigger on those commits once connected in Azure DevOps. Pull requests run build validation; the deployment stage excludes pull requests. The Azure Pipeline is configured to publish JUnit results and deploy the tested source archive. Its Azure Resource Manager connection and App Service name must be configured as persistent pipeline variables, outside source code. Cloud Shell supplies the initial build/deployment and prediction/log checks.
 
 ## Project plan
 
 The [original and revised project plan](docs/Project-Plan.xlsx) contains weekly deliverables and task estimates, the current status of each task, and annual/quarterly milestones. Its revised plan remains open until the cloud evidence has been collected. Estimates are planning assumptions, not claims about actual labour time. The [CSV task list](docs/PROJECT_PLAN.csv) offers a plain-text companion.
 
-- Trello board: not yet created. Required lists are To Do, In Progress, and Done, with cards T1–T8 matching the workbook.
+- [Trello board](https://trello.com/b/9wbc68TD/nd082-azure-ci-cd): publicly readable board with To Do, In Progress and Done lists and cards T1–T8 matching the workbook. Only board members can edit. T1, T2 and T4 are Done; cloud deployment and final demonstration tasks remain To Do.
 - Native spreadsheet link: not yet published. The modern Excel workbook is included in this repository; the rubric also permits a spreadsheet link or a `.xls` file.
+
+![Populated project board after CI verification](evidence/trello-board.png)
 
 ## Run locally
 
@@ -73,18 +79,18 @@ The deployment archive is `dist/app.zip`, with only the runtime files at its roo
 
 ## Validation and evidence
 
-Local validation records will be stored under `evidence/` with their scope clearly labelled. The following rubric evidence remains outstanding:
+Local validation records and hosted GitHub CI evidence are stored under `evidence/` with their scope clearly labelled. Current rubric evidence:
 
 | Required evidence | Status |
 | --- | --- |
 | Project cloned into Azure Cloud Shell | Pending actual Cloud Shell run |
 | Passing `make all` and separate test output in Cloud Shell | Pending actual Cloud Shell run |
-| GitHub Actions successful build and badge screenshot | Pending remote workflow |
+| GitHub Actions successful build and badge screenshot | Verified successful run 40173810937; screenshots above |
 | App Service overview and running application | Pending Azure deployment |
 | Azure Pipelines successful test and deployment screenshots | Pending real pipeline run |
 | Prediction JSON in Azure Cloud Shell | Pending deployed prediction |
 | Prediction value in streamed application logs | Pending actual log stream |
-| Complete Trello board and final project plan | Pending external board/final evidence |
+| Complete Trello board and final project plan | Board populated; final plan awaits cloud results |
 | Clear narrated 1080p demonstration, 1–5 minutes | Pending actual workflow recording |
 
 `evidence/status.json` records the current observed state; its empty URLs do not imply completed remote work. No screenshot has been fabricated or repurposed from a local environment as cloud evidence.

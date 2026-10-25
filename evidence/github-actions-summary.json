@@ -1,0 +1,75 @@
+{
+  "run_id": 40173810937,
+  "run_url": "https://github.com/djessijorge9-ship-it/nd082-azure-cicd/actions/runs/40173810937",
+  "head_sha": "49ec5e503c7ba5e65db020fb277571e4ebd9f902",
+  "event": "push",
+  "status": "completed",
+  "conclusion": "success",
+  "started_at": "2026-10-25T07:42:51Z",
+  "updated_at": "2026-10-25T07:43:41Z",
+  "job_id": 121110112290,
+  "steps": [
+    {
+      "name": "Set up job",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 1
+    },
+    {
+      "name": "Run actions/checkout@v4",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 2
+    },
+    {
+      "name": "Run actions/setup-python@v5",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 3
+    },
+    {
+      "name": "Build, lint and test",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 4
+    },
+    {
+      "name": "Publish test results",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 5
+    },
+    {
+      "name": "Publish deployment package",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 6
+    },
+    {
+      "name": "Post Run actions/setup-python@v5",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 11
+    },
+    {
+      "name": "Post Run actions/checkout@v4",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 12
+    },
+    {
+      "name": "Complete job",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 13
+    }
+  ],
+  "excerpt": [
+    "2026-10-25T07:43:29.5629212Z Your code has been rated at 10.00/10",
+    "2026-10-25T07:43:33.7413396Z platform linux -- Python 3.12.15, pytest-8.3.1, pluggy-1.7.0 -- /opt/hostedtoolcache/Python/3.12.15/x64/bin/python",
+    "2026-10-25T07:43:35.1858518Z collecting ... collected 31 items",
+    "2026-10-25T07:43:35.3205396Z ============================== 31 passed in 1.58s ==============================",
+    "2026-10-25T07:43:35.5908665Z Created /home/runner/work/nd082-azure-cicd/nd082-azure-cicd/dist/app.zip (3138 bytes)"
+  ],
+  "scope": "Actual hosted GitHub Actions CI; not an Azure App Service or Azure Pipelines deployment."
+}
