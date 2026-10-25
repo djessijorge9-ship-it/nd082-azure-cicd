@@ -2,7 +2,7 @@ Scope: local tests and an actual read-only check of the provided Project 2 Azure
 Date: 2026-10-25
 
 Local pytest after adding the context guard:
-43 passed in 8.59s
+48 passed in 7.90s
 
 Pylint:
 Your code has been rated at 10.00/10
@@ -24,3 +24,5 @@ PATH. The final live check above passed. No Azure resource creation, deployment,
 service-connection creation or Azure Pipelines run is represented by this result.
 
 The guard separately permits the lab-recommended App Service target regions East US 2, Central US and North Europe; East US 2 is the default. It still checks the exact resource group metadata location East US. SCM/FTP basic publishing authentication is explicitly disabled in both prepared creation paths.
+
+After approved organization creation, Azure added its exact service-managed billing group. The private context records that single group as read-only baseline metadata, while the only writable target remains Azuredevops. Five additional tests accept the exact approved metadata and reject unknown groups, changed VisualStudioOnline names, changed region and changed subscription. The read-only preflight also verified F1 Linux availability in East US 2 and zero existing resources in the writable target group.

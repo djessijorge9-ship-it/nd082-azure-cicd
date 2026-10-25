@@ -1,12 +1,12 @@
 {
   "status": "local_validation_and_github_ci_complete_cloud_delivery_pending",
-  "azure_resources_created": false,
-  "local_test_count": 43,
+  "local_test_count": 48,
   "verified_training_context": {
     "resource_group": "Azuredevops",
     "resource_group_location": "eastus",
     "app_service_target_location": "eastus2",
-    "read_only_guard_passed": true
+    "read_only_guard_passed": true,
+    "exact_auxiliary_billing_group_read_only": true
   },
   "github_actions_run": "https://github.com/djessijorge9-ship-it/nd082-azure-cicd/actions/runs/40173810937",
   "azure_pipeline_run": null,
@@ -16,5 +16,8 @@
   "project_plan_spreadsheet_url": null,
   "screencast_url": null,
   "cloud_screenshots": [],
-  "note": "Do not treat local tests or prepared YAML as evidence of an actual cloud deployment."
+  "note": "Do not treat local tests or prepared YAML as evidence of an actual cloud deployment.",
+  "app_service_resources_created": false,
+  "azure_devops_organization_created": true,
+  "organization_billing_group_observed": true
 }

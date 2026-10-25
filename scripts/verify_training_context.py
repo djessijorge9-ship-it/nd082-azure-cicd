@@ -35,11 +35,23 @@ def verify_context(expected, account, groups, resource_group, location):
         raise ContextError("Active tenant differs from the verified training tenant")
     if account.get("id") != expected.get("subscription_id"):
         raise ContextError("Active subscription differs from the verified training subscription")
-    if len(groups) != 1:
-        raise ContextError("Expected exactly one assigned training resource group")
-    actual = groups[0]
-    if any(actual.get(key) != approved_group.get(key) for key in ("id", "name", "location")):
-        raise ContextError("Assigned group differs from the verified training resource group")
+    # Organization billing may add one separately approved read-only metadata
+    # group. Match every ID/name/location exactly; no prefix allowlist is used.
+    auxiliary = expected.get("read_only_auxiliary_groups", [])
+    if len(auxiliary) > 1:
+        raise ContextError("At most one independently approved billing metadata group is permitted")
+    baseline = [approved_group, *auxiliary]
+    if len(groups) != len(baseline):
+        raise ContextError("Resource groups differ from the independently verified exact baseline")
+    references = {group["id"]: group for group in baseline}
+    if len(references) != len(baseline):
+        raise ContextError("Approved group IDs must be unique")
+    for group in groups:
+        reference = references.get(group.get("id"))
+        if reference is None or any(group.get(key) != reference.get(key)
+                                    for key in ("id", "name", "location")):
+            raise ContextError("An unknown or changed resource group is present")
+    actual = next(group for group in groups if group["id"] == approved_group["id"])
     return {"verified": True, "resource_group": resource_group,
             "resource_group_location": actual["location"], "app_service_location": location}
 

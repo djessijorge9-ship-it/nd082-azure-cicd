@@ -17,6 +17,10 @@ Azure subscription to bypass training limits.
   lab discovery, transferred privately to the execution environment. It contains
   the verified username hash, tenant, subscription and exact single resource
   group. Keep this file outside the repository and evidence archive.
+  After the approved DevOps organization creation, it also records the exact
+  automatically created billing group as read-only baseline metadata. The guard
+  does not permit any deployment, modification or cleanup in that auxiliary group;
+  arbitrary groups, including other groups with a similar prefix, are refused.
 - The exact existing training resource group `Azuredevops` (metadata in `eastus`),
   an App Service target region (`eastus2` by default), and an approved globally
   unique App Service name.

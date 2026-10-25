@@ -4,7 +4,7 @@ This project delivers a Flask housing-prediction API through GitHub Actions cont
 
 **Current state:** local implementation, validation, the first hosted GitHub Actions build, and the populated Trello board are complete. Azure Cloud Shell, App Service deployment, Azure Pipelines delivery, final cloud evidence, and the demonstration video remain to be completed. The successful GitHub build is not proof of an Azure App Service deployment.
 
-The latest local suite passes 43 tests, including twelve cases for binding deployment
+The latest local suite passes 48 tests, including seventeen cases for binding deployment
 to the exact verified training context, with pylint 10/10. A genuine read-only
 check against the dedicated Project 2 lab also passed. See the
 [guard validation record](evidence/training-context-guard.txt); it records no cloud
@@ -73,6 +73,11 @@ The scripts explicitly disable SCM and FTP basic publishing authentication.
 Deploy with current Azure CLI using Microsoft Entra authentication, or the
 prepared AzureWebApp pipeline task with an authorized connection; do not enable
 basic authentication or create publishing passwords as a workaround.
+
+Creating the approved Azure DevOps organization added one service-managed billing
+resource group. The private context records only that exact auxiliary group's
+ID/name/location as read-only metadata. The guard rejects unknown or changed
+groups; deployment and cleanup still target only `Azuredevops`.
 
 ```bash
 export AZURE_CONTEXT_FILE='/private/location/project02-approved-context.json'

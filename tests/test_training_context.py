@@ -54,3 +54,36 @@ def test_unapproved_context_is_refused_before_deployment(lab, case):
         expected["groups"][0]["name"] = "Azuredevops-other"
     with pytest.raises(ContextError):
         verify_context(expected, account, groups, resource_group, location)
+
+
+def with_approved_billing_metadata(lab):
+    """Add one synthetic, exact approved read-only billing-group baseline."""
+    expected, account, groups = deepcopy(lab)
+    auxiliary = {"id": "/subscriptions/training-sub/resourceGroups/VisualStudioOnline-exact-id",
+                 "name": "VisualStudioOnline-exact-id", "location": "westeurope"}
+    expected["read_only_auxiliary_groups"] = [deepcopy(auxiliary)]
+    groups.append(auxiliary)
+    return expected, account, groups
+
+
+def test_exact_approved_billing_metadata_does_not_expand_writable_target(lab):
+    result = verify_context(*with_approved_billing_metadata(lab), "Azuredevops", "eastus2")
+    assert result["resource_group"] == "Azuredevops"
+    assert result["resource_group_location"] == "eastus"
+
+
+@pytest.mark.parametrize("case", ["unknown_group", "other_vso_prefix", "other_region",
+                                 "other_subscription"])
+def test_unapproved_billing_group_variations_are_refused(lab, case):
+    expected, account, groups = with_approved_billing_metadata(lab)
+    if case == "unknown_group":
+        groups.append({"id": "unknown", "name": "Unknown", "location": "westeurope"})
+    elif case == "other_vso_prefix":
+        groups[1]["name"] = "VisualStudioOnline-other-id"
+        groups[1]["id"] = "/subscriptions/training-sub/resourceGroups/VisualStudioOnline-other-id"
+    elif case == "other_region":
+        groups[1]["location"] = "eastus"
+    elif case == "other_subscription":
+        groups[1]["id"] = "/subscriptions/personal-sub/resourceGroups/VisualStudioOnline-exact-id"
+    with pytest.raises(ContextError):
+        verify_context(expected, account, groups, "Azuredevops", "eastus2")
