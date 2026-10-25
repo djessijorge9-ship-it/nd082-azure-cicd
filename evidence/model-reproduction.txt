@@ -1,0 +1,29 @@
+{
+  "source": "Udacity official starter Boston_housing_predict.ipynb and housing.csv",
+  "dataset_sha256": "375129a38b523390c0844089f9d6b36c1c592878babec2a545a8f3a0e476d883",
+  "model_sha256": "68c67096aade9da82a69911471d29319ee0f295aa540cc346e9a1a03ab557618",
+  "features": [
+    "CHAS",
+    "RM",
+    "TAX",
+    "PTRATIO",
+    "B",
+    "LSTAT"
+  ],
+  "preprocessing": "No scaling: raw six numeric features, matching notebook LinearRegression",
+  "sklearn_version": "1.5.1",
+  "random_state": 7,
+  "train_rows": 404,
+  "test_rows": 102,
+  "test_mse": 39.95883743552935,
+  "coefficient": [
+    3.6526213268592094,
+    5.846286596480232,
+    -0.0028210210162731286,
+    -0.7607441616814192,
+    0.00965156279368351,
+    -0.4048419165654301
+  ],
+  "intercept": 2.431574790057894,
+  "scope": "Educational legacy deployment sample; not for real housing decisions"
+}

@@ -1,0 +1,12 @@
+{
+  "status": "local_preparation_only",
+  "azure_resources_created": false,
+  "github_actions_run": null,
+  "azure_pipeline_run": null,
+  "deployed_app_url": null,
+  "trello_board_url": null,
+  "project_plan_spreadsheet_url": null,
+  "screencast_url": null,
+  "cloud_screenshots": [],
+  "note": "Do not treat local tests or prepared YAML as evidence of an actual cloud deployment."
+}

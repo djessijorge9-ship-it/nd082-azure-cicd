@@ -1,0 +1,60 @@
+# A permitted, existing Azure Resource Manager connection must be supplied.
+# Do not create service principals in the Udacity shared training subscription.
+# Before importing, set these two non-secret Azure DevOps pipeline variables:
+# azureServiceConnection and webAppName. They persist for automatic commit runs.
+trigger:
+  branches:
+    include: [main, master]
+pr:
+  branches:
+    include: [main, master]
+variables:
+  pythonVersion: '3.12'
+stages:
+  - stage: Build
+    jobs:
+      - job: TestAndPackage
+        pool:
+          vmImage: ubuntu-latest
+        steps:
+          - checkout: self
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: '$(pythonVersion)'
+          - script: make all
+            displayName: Install, lint, test and package
+          - task: PublishTestResults@2
+            condition: succeededOrFailed()
+            inputs:
+              testResultsFormat: JUnit
+              testResultsFiles: test-results/junit.xml
+              failTaskOnFailedTests: true
+          - publish: dist/app.zip
+            artifact: app-source
+  - stage: Deploy
+    dependsOn: Build
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master')))
+    jobs:
+      - deployment: AppService
+        pool:
+          vmImage: ubuntu-latest
+        environment: nd082-training
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+                - download: current
+                  artifact: app-source
+                - task: AzureWebApp@1
+                  inputs:
+                    azureSubscription: '$(azureServiceConnection)'
+                    appType: webAppLinux
+                    appName: '$(webAppName)'
+                    package: '$(Pipeline.Workspace)/app-source/app.zip'
+                    runtimeStack: 'PYTHON|3.12'
+                    startUpCommand: 'gunicorn --bind=0.0.0.0:8000 --workers 2 --timeout 120 --access-logfile - --error-logfile - app:app'
+                - script: python scripts/predict.py "https://${WEB_APP_NAME}.azurewebsites.net"
+                  displayName: Deployment prediction smoke test
+                  env:
+                    WEB_APP_NAME: '$(webAppName)'

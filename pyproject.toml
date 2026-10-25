@@ -1,0 +1,10 @@
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+filterwarnings = ["error"]
+
+[tool.pylint.messages_control]
+disable = ["missing-function-docstring", "missing-module-docstring", "missing-class-docstring", "redefined-outer-name", "too-many-statements"]
+
+[tool.pylint.format]
+max-line-length = 100

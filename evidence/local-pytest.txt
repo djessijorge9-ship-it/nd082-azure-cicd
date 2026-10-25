@@ -1,0 +1,43 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.14, pytest-8.3.1, pluggy-1.7.0 -- python
+cachedir: .pytest_cache
+rootdir: .
+configfile: pyproject.toml
+testpaths: tests
+plugins: platformdirs-4.13.5
+collecting ... collected 31 items
+
+tests/test_app.py::test_home_and_readiness PASSED                        [  3%]
+tests/test_app.py::test_prediction_matches_independent_linear_formula PASSED [  6%]
+tests/test_app.py::test_batch_invariance_and_input_sensitivity PASSED    [  9%]
+tests/test_app.py::test_column_order_does_not_change_prediction PASSED   [ 12%]
+tests/test_app.py::test_rejects_invalid_feature_values[None] PASSED      [ 16%]
+tests/test_app.py::test_rejects_invalid_feature_values[6.575] PASSED     [ 19%]
+tests/test_app.py::test_rejects_invalid_feature_values[True] PASSED      [ 22%]
+tests/test_app.py::test_rejects_invalid_feature_values[nan] PASSED       [ 25%]
+tests/test_app.py::test_rejects_invalid_feature_values[inf] PASSED       [ 29%]
+tests/test_app.py::test_rejects_invalid_feature_values[bad_value5] PASSED [ 32%]
+tests/test_app.py::test_rejects_invalid_feature_values[bad_value6] PASSED [ 35%]
+tests/test_app.py::test_rejects_invalid_feature_values[10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000] PASSED [ 38%]
+tests/test_app.py::test_rejects_invalid_schema[None] PASSED              [ 41%]
+tests/test_app.py::test_rejects_invalid_schema[bad_payload1] PASSED      [ 45%]
+tests/test_app.py::test_rejects_invalid_schema[bad_payload2] PASSED      [ 48%]
+tests/test_app.py::test_rejects_invalid_schema[bad_payload3] PASSED      [ 51%]
+tests/test_app.py::test_rejects_invalid_schema[bad_payload4] PASSED      [ 54%]
+tests/test_app.py::test_rejects_invalid_schema[bad_payload5] PASSED      [ 58%]
+tests/test_app.py::test_rejects_extra_feature PASSED                     [ 61%]
+tests/test_app.py::test_rejects_mismatched_row_identifiers PASSED        [ 64%]
+tests/test_app.py::test_rejects_mixed_column_containers PASSED           [ 67%]
+tests/test_app.py::test_rejects_unequal_arrays PASSED                    [ 70%]
+tests/test_app.py::test_rejects_oversized_request_and_too_many_rows PASSED [ 74%]
+tests/test_app.py::test_content_type_and_malformed_json PASSED           [ 77%]
+tests/test_app.py::test_get_prediction_is_not_allowed PASSED             [ 80%]
+tests/test_app.py::test_numerical_overflow_is_a_client_error PASSED      [ 83%]
+tests/test_app.py::test_missing_model_is_unavailable PASSED              [ 87%]
+tests/test_app.py::test_prediction_is_logged_without_request_features PASSED [ 90%]
+tests/test_delivery.py::test_deployment_archive_contains_only_runtime_files PASSED [ 93%]
+tests/test_delivery.py::test_pipeline_prevents_pull_request_deployment_and_keeps_tests PASSED [ 96%]
+tests/test_delivery.py::test_github_workflow_has_real_build_on_push_and_pull_request PASSED [100%]
+
+- generated xml file: .\test-results\junit.xml -
+============================= 31 passed in 7.18s ==============================
