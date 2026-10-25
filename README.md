@@ -2,15 +2,15 @@
 
 This project delivers a tested Flask housing-prediction API to Linux Azure App Service. GitHub Actions supplies automatic CI. Azure Pipelines performs the complete build, test publication, packaging, Entra deployment and live prediction check after an attended training-user login.
 
-**Verified on 25 October 2026:** 48 tests and pylint 10/10 in Azure Cloud Shell; successful GitHub Actions CI; a historical free F1 App Service deployment with genuine prediction/log evidence; and [Azure Pipelines run 3](https://dev.azure.com/nd082-dj-20261025/ND082-CICD/_build/results?buildId=3), including 48 published passing cases and the `app-source` artifact. All preparation deliverables are complete, including the [Unlisted narrated walkthrough](https://youtu.be/KyiWE4R-WMA). Detailed native captures accompany the private course ZIP.
+**Verified on 25 October 2026:** 48 tests and pylint 10/10 in Azure Cloud Shell; successful GitHub Actions CI; a historical free F1 App Service deployment with genuine prediction/log evidence; and [Azure Pipelines run 3](https://dev.azure.com/nd082-dj-20261025/ND082-CICD/_build/results?buildId=3), including 48 published passing cases and the `app-source` artifact. The actual screenshots below are assembled. The validated 184.30-second narrated 1080p walkthrough is now published Unlisted; all preparation deliverables are complete.
 
 Source: https://github.com/djessijorge9-ship-it/nd082-azure-cicd
 
 [![Python continuous integration](https://github.com/djessijorge9-ship-it/nd082-azure-cicd/actions/workflows/ci.yml/badge.svg)](https://github.com/djessijorge9-ship-it/nd082-azure-cicd/actions/workflows/ci.yml)
 
-The badge reports the current repository status. [GitHub Actions run 40189164258](https://github.com/djessijorge9-ship-it/nd082-azure-cicd/actions/runs/40189164258) succeeded for source `3fc837af903e12ce98f527539a11848cfe37ae1a`, including 48 tests, lint and the runtime archive. The earlier screenshots below document the first successful 31-test build; the test suite was subsequently expanded to 48 cases.
+The badge reports the current repository status. [GitHub Actions run 40189164258](https://github.com/djessijorge9-ship-it/nd082-azure-cicd/actions/runs/40189164258) succeeded for source `3fc837af903e12ce98f527539a11848cfe37ae1a`, including 48 tests, lint and the runtime archive. The current run screenshot below records that 48-test source. The badge screenshot was captured at the earlier successful checkpoint.
 
-![First successful GitHub Actions build](evidence/github-actions-run.png)
+![Successful GitHub Actions build for the delivered source](evidence/github-actions-current.jpg)
 
 ![Passing badge in the actual repository](evidence/github-actions-badge.png)
 
@@ -24,15 +24,15 @@ The same job runs `make all`, publishes JUnit results and the tested archive, de
 
 This is **attended delivery**, with manual authentication for each fresh worker. Source branch triggers exist, but their default opt-in is false; they do not establish unattended deployment. The retained `azure-pipelines.yml` service-connection alternative is unconfigured and its definition 1 is disabled. A separate [hosted-capacity probe, run 2](https://dev.azure.com/nd082-dj-20261025/ND082-CICD/_build/results?buildId=2), proves CI capacity only. Neither is substituted for the full run 3 delivery evidence. See [private-input and authentication details](docs/EXISTING_USER_PIPELINE.md).
 
-Run 3 used Azure Repos commit `17bdad0f615507a8d0e68e1585df042dd7918ba9`, corresponding to public source `3fc837af903e12ce98f527539a11848cfe37ae1a`. All job tasks succeeded. The [Test Run 3 results](https://dev.azure.com/nd082-dj-20261025/ND082-CICD/_TestManagement/Runs?runId=3&_a=runCharts) and [individual-case/artifact readback](evidence/azure-pipelines-run3-summary.json) confirm 48/48 Passed and one `app-source` PipelineArtifact. The final retained Build Summary capture also shows one published artifact and 100% passed.
+Run 3 used Azure Repos commit `17bdad0f615507a8d0e68e1585df042dd7918ba9`, corresponding to public source `3fc837af903e12ce98f527539a11848cfe37ae1a`. All job tasks succeeded. The [Test Run 3 results](https://dev.azure.com/nd082-dj-20261025/ND082-CICD/_TestManagement/Runs?runId=3&_a=runCharts) and individual-case API readback confirm 48/48 Passed and one `app-source` PipelineArtifact. The earlier Build Summary display lagged behind the APIs; the final retained screenshot now shows one published artifact and 100% passed. The [independent test/artifact readback](evidence/azure-pipelines-run3-summary.json) confirms the 48 individual case records.
 
 ## Project plan
 
 The [Excel project plan](https://github.com/djessijorge9-ship-it/nd082-azure-cicd/blob/main/docs/Project-Plan.xlsx) contains the original/revised weekly task estimates, task states, and annual/quarterly milestones. A [local copy](docs/Project-Plan.xlsx) and [CSV companion](docs/PROJECT_PLAN.csv) are included. Original and revised estimates total 6 and 7 hours; these are planning assumptions, not recorded labour times. Some planned later-week tasks were completed early on 25 October.
 
-The [publicly readable Trello board](https://trello.com/b/9wbc68TD/nd082-azure-ci-cd) has To Do, In Progress and Done lists. T1–T8 are Done: requirements, application/model tests, Cloud Shell, GitHub CI, App Service, attended Azure delivery, final evidence and the published narrated walkthrough/handoff. Only board members can edit. The older board screenshot below records the earlier CI checkpoint.
+The [publicly readable Trello board](https://trello.com/b/9wbc68TD/nd082-azure-ci-cd) has To Do, In Progress and Done lists. T1–T8 are Done: requirements, application/model tests, Cloud Shell, GitHub CI, App Service, attended Azure delivery, final evidence and the published narrated walkthrough/handoff. Only board members can edit. The current board screenshot below records all eight completed tasks.
 
-![Earlier populated project board](evidence/trello-board.png)
+![Final eight-completed-task project board](evidence/trello-board-current.jpg)
 
 ## Run locally
 
@@ -60,9 +60,27 @@ The historical Boston dataset contains a racially constructed feature. It is ret
 
 ## Cloud Shell and application evidence
 
-Actual Cloud Shell clones of the public source completed `make all` with 48 passing tests, pylint 10/10, a 3,138-byte runtime archive and exit 0. The first retained build used `bf886ac3b409a93a4ad442b7688dcb5eb22385ac`; the final capture repeated it at the hosted-delivery source snapshot. Cloud Shell also returned the deployed sample prediction. These were ephemeral Bash sessions without a storage account. Screenshots and a visible console excerpt are retained; the normal full-log download failed and is not presented as available.
+Actual Cloud Shell clones of the public source completed `make all` with 48 passing tests, pylint 10/10, a 3,138-byte runtime archive and exit 0. The first retained build used `bf886ac3b409a93a4ad442b7688dcb5eb22385ac`; the final capture repeated it at the hosted-delivery source snapshot. Cloud Shell also returned the deployed sample prediction. These were ephemeral Bash sessions without a storage account. Actual clone/build screenshots are below. A visible console excerpt is retained; the normal full-log download failed and is not presented as available.
 
-The historical training App Service passed real health, single-row, batch and invalid-schema HTTP checks. Its first-row prediction remains unchanged in a batch, while increasing RM changes the second result. See [actual HTTP responses](evidence/azure-prediction.json) and [matching Azure request-ID log lines](evidence/azure-prediction-log.txt). The exact owned app and its sole-use F1 plan were removed after all evidence was saved, at 12:41:57 UTC on 25 October 2026. The former endpoint is no longer available. [Cleanup readback](evidence/azure-cleanup.json) confirms both targets absent, other resource inventory unchanged, and training groups/billing metadata preserved.
+![Actual Azure Cloud Shell source clone](evidence/cloudshell-clone.jpg)
+
+![Actual Cloud Shell 48 tests, pylint 10/10 and package output](evidence/cloudshell-build.jpg)
+
+The historical training App Service passed real health, single-row, batch and invalid-schema HTTP checks. Its first-row prediction remains unchanged in a batch, while increasing RM changes the second result. See [actual HTTP responses](evidence/azure-prediction.json) and [matching Azure request-ID log lines](evidence/azure-prediction-log.txt). After all actual screenshots/video were saved, the exact owned app and its sole-use F1 plan were removed at 12:41:57 UTC on 25 October 2026. The former endpoint is no longer available. [Cleanup readback](evidence/azure-cleanup.json) confirms both targets absent, other resource inventory unchanged, and training groups/billing metadata preserved.
+
+![Running training application homepage](evidence/azure-app-home.jpg)
+
+The actual full Azure delivery and deployment logs are retained here:
+
+![Full Azure Pipelines run 3 success](evidence/azure-pipelines-run3.jpg)
+
+![Real Entra deployment and prediction-check task](evidence/azure-pipelines-deployment.jpg)
+
+A fresh request after delivery returned request ID `e7e79f0a11334c58b28d48a83aa33662` and prediction `30.211093795690005`. The genuine app log contains the same ID and value. The request ID and value are transcribed from these screenshots.
+
+![Post-delivery prediction in Azure Cloud Shell](evidence/cloudshell-post-delivery-prediction.jpg)
+
+![Genuine Azure stream with the matching request ID](evidence/azure-post-delivery-logstream.jpg)
 
 The [cloud runbook](docs/CLOUD_RUNBOOK.md) records reproducible steps. `commands.sh` includes the required `az webapp up -n "$APP_NAME"` operation with basic publishing auth disabled. The writable group is exactly `Azuredevops`, metadata region `eastus`; the separately approved App Service target is `eastus2`. An exact service-managed DevOps billing group is read-only baseline metadata, never a deployment or cleanup target. Keep private scope files and tokens outside source/evidence archives.
 
@@ -72,19 +90,21 @@ The [cloud runbook](docs/CLOUD_RUNBOOK.md) records reproducible steps. `commands
 | --- | --- |
 | Cloud Shell clone, build and tests | Actual 48 tests, lint 10/10, package and exit 0; screenshot/visible excerpt retained |
 | GitHub Actions and badge | Actual successful run 40189164258 for source 3fc837; earlier screenshots included |
-| App Service and predictions | Historical F1 Linux deployment; real HTTP/log evidence retained; owned app/plan removed after evidence |
+| App Service and predictions | Historical F1 Linux deployment; genuine HTTP/log records retained; exact app/plan removed after evidence |
 | Azure Pipelines full delivery | Run 3 succeeded; exact-scope authentication, 48 tests, JUnit, artifact, Entra deployment, smoke check and token-cache removal |
 | Published cases and artifact | Test Run 3/build 3: 48 cases, all Passed; one app-source PipelineArtifact, verified through official APIs |
-| Trello and estimates | T1–T8 Done; revised workbook/CSV and final board complete |
-| Clear narrated 1080p video, 1–5 minutes | [Unlisted walkthrough](https://youtu.be/KyiWE4R-WMA), 184.30 seconds, 1920×1080; actual native captures letterboxed without upscaling |
+| Trello and estimates | T1–T8 Done; completed board and revised workbook/CSV included |
+| Clear narrated 1080p video, 1–5 minutes | [Unlisted walkthrough](https://youtu.be/KyiWE4R-WMA), 184.30 seconds,1920×1080; full decode/audio validation passed |
 
 `evidence/status.json` records the current evidence scope. No local test is relabeled as a remote build, and a prepared YAML file alone is not treated as executed delivery. The 48 local cases include seventeen training-context guard cases; the current lint score is 10/10.
 
 ## Demonstration and enhancements
 
-[Watch: ND082 Azure CI/CD—Cloud Shell to Prediction](https://youtu.be/KyiWE4R-WMA) (Unlisted). The 184.30-second 1920×1080/30fps narrated screenshot walkthrough shows the genuine Cloud Shell clone/build, GitHub CI, attended Azure delivery, deployed JSON response and matching log. Native captures are letterboxed without upscaling. Full source-video decode and audio checks passed. Detailed cloud captures remain in the private course ZIP; this public repository retains source and results/video links.
+[Watch the Unlisted demonstration: ND082 Azure CI/CD—Cloud Shell to Prediction](https://youtu.be/KyiWE4R-WMA). The completed 184.30-second 1920×1080/30fps video is an honestly labeled narrated screenshot walkthrough of actual Cloud Shell, GitHub CI, Azure delivery, deployed JSON response and matching log. Native screenshots are letterboxed without upscaling. The full video decoded successfully; audio peak is −1.2 dBFS and mean is −16.6 dBFS.
 
 Future proposals are a suitable replacement dataset, drift/model-version checks, reviewed dependency updates, approved staging/rollback, and availability/latency monitoring. The 2027 roadmap is a proposal, not authorization for ongoing Azure spend.
+
+The nine reviewed native Cloud Shell, CI/CD, application, prediction/log and board captures above are published with explicit approval. Original captures are preserved without editing or upscaling.
 
 ## Sources
 
