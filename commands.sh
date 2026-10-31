@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Prepared Cloud Shell command sequence. Record actual output when it is run.
+# Build and deploy the application from Azure Cloud Shell.
 set -euo pipefail
 cd "$(dirname "$0")"
 : "${AZURE_CONTEXT_FILE:?Set the private verified Project 2 lab context JSON}"
