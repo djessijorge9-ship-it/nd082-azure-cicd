@@ -28,6 +28,27 @@ def test_exact_verified_group_and_permitted_app_region_are_accepted(lab, app_reg
                       "resource_group_location": "eastus", "app_service_location": app_region}
 
 
+def test_exact_verified_southcentralus_group_metadata_is_accepted(lab):
+    expected, account, groups = deepcopy(lab)
+    expected["groups"][0]["location"] = "southcentralus"
+    groups[0]["location"] = "southcentralus"
+    result = verify_context(expected, account, groups, "Azuredevops", "eastus2")
+    assert result == {"verified": True, "resource_group": "Azuredevops",
+                      "resource_group_location": "southcentralus",
+                      "app_service_location": "eastus2"}
+
+
+@pytest.mark.parametrize("approved, observed", [("eastus", "southcentralus"),
+                                                ("southcentralus", "eastus")])
+def test_changed_actual_metadata_is_refused_even_between_known_lab_locations(
+        lab, approved, observed):
+    expected, account, groups = deepcopy(lab)
+    expected["groups"][0]["location"] = approved
+    groups[0]["location"] = observed
+    with pytest.raises(ContextError, match="unknown or changed resource group"):
+        verify_context(expected, account, groups, "Azuredevops", "eastus2")
+
+
 @pytest.mark.parametrize("case", ["other_user", "other_tenant", "other_subscription",
                                  "other_group", "extra_group", "wrong_group_id",
                                  "wrong_region", "unverified", "stale_approved_group"])
