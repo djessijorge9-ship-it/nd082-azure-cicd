@@ -18,8 +18,10 @@ for policy in scm ftp; do
     --parent "sites/$APP_NAME" --query properties.allow --output tsv)"
   [[ "$allowed" == false ]] || { echo 'Basic publishing authentication must remain disabled'; exit 2; }
 done
+# Require the deployment result from Kudu; check the live application below.
+# Linux startup tracking can lag behind the actual running instance in this lab.
 az webapp deploy --name "$APP_NAME" --resource-group "$AZURE_RESOURCE_GROUP" \
-  --src-path dist/app.zip --type zip --output none
+  --src-path dist/app.zip --type zip --track-status false --output none
 app_host="$(az webapp show --name "$APP_NAME" --resource-group "$AZURE_RESOURCE_GROUP" \
   --query defaultHostName --output tsv)"
 python3 scripts/predict.py "https://${app_host}"
