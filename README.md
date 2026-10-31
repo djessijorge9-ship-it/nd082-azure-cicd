@@ -2,25 +2,29 @@
 
 This project delivers a tested Flask housing-prediction API to Linux Azure App Service. GitHub Actions supplies automatic CI. The current Azure Pipelines YAML runs CI without Azure login; explicitly opted-in main-branch, non-PR runs then perform attended Azure deployment and prediction checks.
 
-**Verified baseline on 31 October 2026:** source `0519833c819252ea70c4e6a36d05d25a37264333` passed 51 tests in a fresh Azure Cloud Shell clone and in GitHub Actions. [Azure Pipelines build 2](https://dev.azure.com/nd082-cicd-dj-20261031/ND082-CICD/_build/results?buildId=2) used the earlier Azure Repos mirror and succeeded through tests, artifact publication, deployment, readiness, live JSON prediction and worker-credential cleanup. **The replacement human-recorded 1–5 minute screencast is pending.** The earlier narrated screenshot walkthrough is archival and is not the current video deliverable.
+**Verified on 31 October 2026:** source `d15af0f8f617ea3b6cfaa5cf90b027cb594311b7` passed GitHub Actions, automatic direct GitHub-source Azure CI, and the full attended Azure delivery. Build 5 completed deployment, application readiness, a fresh JSON prediction and worker-credential cleanup. **The replacement human-recorded 1–5 minute screencast is pending.** The earlier narrated screenshot walkthrough is archival and is not the current video deliverable. Earlier mirror-delivery evidence at `0519833` is retained separately below.
 
-The integration revision is `96d91f458890d39bcef866b97a10e44248e6cb6d`, with GitHub Actions run 13 successful. The approved GitHub App is restricted to this repository and mapped to the existing Azure DevOps organization/project. Direct GitHub-source **definition 2** is configured to `azure-pipelines-existing-user.yml`, with the private context and fixed app variables saved. Its first automatic push-triggered run is **not yet verified**; the earlier mirror build 2 does not prove that new integration.
+**Direct-source integration verified:** definition 2 automatically ran [Azure build 3](https://dev.azure.com/nd082-cicd-dj-20261031/ND082-CICD/_build/results?buildId=3), display `20261031.1`, for GitHub main source `d15af0f8f617ea3b6cfaa5cf90b027cb594311b7`. Its reason was Individual CI: 51/51 tests passed in 1.816 seconds, one artifact was published, and the overall run took 56 seconds. The approved GitHub App is restricted to this repository. [GitHub Actions run 14](https://github.com/djessijorge9-ship-it/nd082-azure-cicd/actions/runs/41219960430) succeeded at the same source: 51 passed in 1.27 seconds, a 3,138-byte runtime package, two artifacts and 39 seconds overall.
+
+Same-source attended [Azure build 5](https://dev.azure.com/nd082-cicd-dj-20261031/ND082-CICD/_build/results?buildId=5), display `20261031.3`, succeeded in 3m13s overall (3m7s job). Its 51/51 tests passed in 1.600 seconds, with zero unreported and one published artifact. Deployment completed, HTTPS health reported `ready`, and prediction `30.211093795690005` returned request ID `ed25992d38834124b1de8c54aa58f542`. The job removed its temporary Azure authentication state. The F1 app and its sole-use plan remain for the bounded human-recording session.
 
 Source: https://github.com/djessijorge9-ship-it/nd082-azure-cicd
 
+The executed application/pipeline snapshot is `d15af0f8f617ea3b6cfaa5cf90b027cb594311b7`. This documentation/evidence update leaves that validated implementation unchanged; its later commit is separate from the recorded execution results.
+
 [![Python continuous integration](https://github.com/djessijorge9-ship-it/nd082-azure-cicd/actions/workflows/ci.yml/badge.svg)](https://github.com/djessijorge9-ship-it/nd082-azure-cicd/actions/workflows/ci.yml)
 
-The badge reports the current repository status. [GitHub Actions run 12](https://github.com/djessijorge9-ship-it/nd082-azure-cicd/actions/runs/41214014857) succeeded for source `0519833c819252ea70c4e6a36d05d25a37264333`, including 51 tests. The badge screenshot below is from an earlier checkpoint.
+The badge reports the current repository status. [GitHub Actions run 14](https://github.com/djessijorge9-ship-it/nd082-azure-cicd/actions/runs/41219960430) succeeded at the latest verified implementation `d15af0f8f617ea3b6cfaa5cf90b027cb594311b7`, including 51 tests. The separate badge screenshot below is from an earlier checkpoint.
 
-![31 October successful GitHub Actions run 12](evidence/cicd-github-success-1031.jpg)
+![31 October successful GitHub Actions run 14 at the verified implementation](evidence/cicd-github-final-source-1031.jpg)
 
 ![Passing badge in the actual repository](evidence/github-actions-badge.png)
 
 ## Architecture and actual delivery path
 
-![CI/CD workflow, verified baseline and pending direct-source integration](docs/architecture.svg)
+![Verified direct GitHub CI/CD with attended Azure delivery](docs/architecture.svg)
 
-Commits and pull requests run GitHub lint, tests and packaging. The verified earlier Azure delivery used an explicitly reviewed snapshot in private Azure Repos through definition 1. Direct GitHub-source definition 2 uses the approved repository-scoped GitHub App; its triggered execution is not yet verified. In `azure-pipelines-existing-user.yml`, Microsoft-hosted Ubuntu 24.04 runs `make all`, publishes JUnit and the archive before optional Azure authentication. Authentication and deployment require `allowDeviceCodeBootstrap=true`, a successful CI result, main, and a non-PR run. The existing provided training user signs in through Microsoft's device-login page, then the exact private scope guard must pass.
+Commits and pull requests run GitHub lint, tests and packaging. Direct GitHub-source definition 2 uses the approved repository-scoped GitHub App: build 3 verifies automatic CI, and build 5 verifies opted-in delivery. In `azure-pipelines-existing-user.yml`, Microsoft-hosted Ubuntu 24.04 runs `make all`, publishes JUnit and the archive before optional Azure authentication. Authentication and deployment require `allowDeviceCodeBootstrap=true`, a successful CI result, main, and a non-PR run. The existing provided training user signs in through Microsoft's device-login page, then the exact private scope guard must pass. CI-only success is kept distinct from the full deployment result.
 
 An opted-in delivery deploys with Microsoft Entra authentication, waits up to 180 seconds for HTTPS `/health` to report `ready`, checks a fresh live prediction, and removes its job-local login cache/private context. Deployment uses `--track-status false` because Linux startup tracking lagged behind the completed Kudu deployment; readiness and prediction remain required. SCM and FTP basic publishing authentication remain disabled. No ARM service connection, service principal, PAT or extra agent VM is used by this delivery path.
 
@@ -32,7 +36,7 @@ Historical run 3 on 25 October used Azure Repos commit `17bdad0f615507a8d0e68e15
 
 The [Excel project plan](https://github.com/djessijorge9-ship-it/nd082-azure-cicd/blob/main/docs/Project-Plan.xlsx) uses the supplied `Project Management Plan` template for its first tab, with current 31 October weekly deliverables, per-task estimates, quarterly/yearly goals and pending work. Two dated tabs preserve the original 25 October plan and roadmap. A [local copy](docs/Project-Plan.xlsx) and the [historical 25 October CSV](docs/PROJECT_PLAN.csv) are included. The existing original/revised estimates remain 6 and 7 hours; these are estimates, not recorded labour times. Original scheduled weeks are retained rather than relabeled as actual completion dates.
 
-The [publicly readable Trello board](https://trello.com/b/9wbc68TD/nd082-azure-ci-cd) has To Do, In Progress and Done lists. Its retained 25 October snapshot marks T1–T8 Done, including the earlier narrated walkthrough/handoff. That board snapshot and the CSV are historical; the workbook's first tab explicitly keeps the replacement human recording pending and direct-source integration in progress. Only board members can edit the board.
+The [publicly readable Trello board](https://trello.com/b/9wbc68TD/nd082-azure-ci-cd) has To Do, In Progress and Done lists. Its retained 25 October snapshot marks T1–T8 Done, including the earlier narrated walkthrough/handoff. That board snapshot and the CSV are historical; the workbook's first tab records verified direct-source CI and delivery while keeping the replacement human recording pending. Only board members can edit the board.
 
 ![Historical 25 October project board](evidence/trello-board-current.jpg)
 
@@ -63,6 +67,14 @@ The historical Boston dataset contains a racially constructed feature. It is ret
 ## Cloud Shell and application evidence
 
 ### Current verification: 31 October 2026
+
+Direct GitHub-source build 3 was automatically triggered for `d15af0f8f617ea3b6cfaa5cf90b027cb594311b7`; its successful 51/51 test result and published artifact are shown below. Same-source opted-in delivery build 5 also succeeded, including deployment, health, fresh prediction and removal of worker credentials.
+
+![Successful automatic GitHub-triggered Azure build 3](evidence/cicd-github-triggered-pipeline-1031.jpg)
+
+![Successful direct GitHub-source full Azure delivery build 5](evidence/cicd-direct-github-pipeline-success-1031.jpg)
+
+![Build 5 successful deployment, readiness and fresh JSON prediction](evidence/cicd-direct-github-deployment-1031.jpg)
 
 The fresh Cloud Shell clone at baseline `0519833c819252ea70c4e6a36d05d25a37264333` passed 51 tests in 1.71 seconds. The earlier full attended [Azure Pipelines mirror build 2](https://dev.azure.com/nd082-cicd-dj-20261031/ND082-CICD/_build/results?buildId=2) ran from 15:22:56 to 15:26:41 UTC; all tasks succeeded. Its prediction smoke check returned `30.211093795690005` with request ID `a194c0ed5bf14a5f8b69543dbbcaaaa9`. These results precede integration revision `96d91f4`.
 
@@ -113,10 +125,10 @@ The [cloud runbook](docs/CLOUD_RUNBOOK.md) records reproducible steps. `commands
 | Evidence | Observed result |
 | --- | --- |
 | Cloud Shell clone and tests | 31 October baseline 0519833: 51 passed in 1.71 seconds; historical 48-test/lint evidence retained separately |
-| GitHub Actions and badge | Run 13 succeeded for integration revision 96d91f4; retained run 12 screenshot shows baseline 0519833 |
+| GitHub Actions and badge | Run 14 at d15af0f succeeded: 51 passed in 1.27s, 3,138-byte runtime package, two artifacts and 39s overall |
 | App Service and predictions | Current F1 app view and matching fresh JSON/live stream at 16:11:01 UTC retained; 25 October app/plan cleanup remains historical |
-| Azure Pipelines full delivery | Earlier mirror build 2 succeeded: tests, JUnit, artifact, Entra deployment, readiness, prediction and worker-credential removal |
-| Direct GitHub-source pipeline | Definition 2 configured with approved repository-scoped App, correct YAML and saved variables; automatic push-triggered execution not yet verified |
+| Azure Pipelines full delivery | Direct GitHub build 5 succeeded at d15af0f: 51/51 Passed in 1.600s, one artifact, 3m13s overall, deployment/health/prediction and worker-credential cleanup |
+| Direct GitHub-source pipeline | Automatic Individual CI build 3 at d15af0f succeeded: 51/51 Passed, 1.816s test duration, one artifact, 56s overall |
 | Historical cases and artifact | 25 October Test Run 3/build 3: 48 Passed cases and one app-source PipelineArtifact, verified through official APIs |
 | Plan and Trello | Supplied template completed with current status and dated original history; historical board/CSV retained; 6/7 hour estimates unchanged |
 | Human-recorded screencast, 1–5 minutes | Pending: readable 1080p+, 16:9, clear audio, full login-to-prediction workflow and streamed application logs |
