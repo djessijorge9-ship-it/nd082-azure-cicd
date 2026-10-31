@@ -131,15 +131,23 @@ The [cloud runbook](docs/CLOUD_RUNBOOK.md) records reproducible steps. `commands
 | Direct GitHub-source pipeline | Automatic Individual CI build 3 at d15af0f succeeded: 51/51 Passed, 1.816s test duration, one artifact, 56s overall |
 | Historical cases and artifact | 25 October Test Run 3/build 3: 48 Passed cases and one app-source PipelineArtifact, verified through official APIs |
 | Plan and Trello | Supplied template completed with current status and dated original history; historical board/CSV retained; 6/7 hour estimates unchanged |
-| Human-recorded screencast, 1–5 minutes | Pending: readable 1080p+, 16:9, clear audio, full login-to-prediction workflow and streamed application logs |
+| Human-recorded screencast, 1–5 minutes | Pending: rehearsal link staged below for replacement before Submit; own 1080p+/16:9 recording with clear audio, full workflow and streamed logs required |
 
 `evidence/status.json` retains the 25 October evidence snapshot; the current verification is dated above. No local test is relabeled as a remote build, and a prepared YAML file alone is not treated as executed delivery. Test counts are tied to their source snapshots.
 
 ## Demonstration and enhancements
 
-The replacement human-recorded screencast is pending. It must be 1–5 minutes, at least 1080p with 16:9 aspect ratio, readable text and clear audio. Show the operator's actual workflow from Azure Cloud Shell login through CI, the successful GitHub Actions build, Azure deployment, a fresh JSON prediction and streamed logs from the deployed application. Publish its YouTube link only after that recording exists and has been checked.
+**Staged rehearsal video — replace before Submit:** [Watch the rehearsal placeholder](https://youtu.be/R7jOR_7KNkQ).
 
-The [earlier Unlisted screenshot walkthrough](https://youtu.be/KyiWE4R-WMA) is **archival and superseded as the current video deliverable**. It is a 184.30-second, 1920×1080/30fps narrated assembly of historical screenshots, rather than the required human screencast.
+The final human-recorded screencast remains pending. This rehearsal shows the earlier `0519833` private-mirror baseline and a later response/log pair for request `9af7c43087a842b093df42e002c9bf0c`. It is a replacement placeholder, not a recording of the verified `d15af0f` direct-source builds 3 and 5 or the final human submission.
+
+Your replacement must be 1–5 minutes, at least 1080p with 16:9 aspect ratio, readable text and clear audio. Show the actual workflow from Azure Cloud Shell login through CI, GitHub Actions, Azure deployment, a fresh JSON prediction and streamed application logs.
+
+Before Submit:
+
+- Replace the rehearsal URL with your own human-recorded YouTube video.
+- Match the source revision, GitHub/Azure run IDs and prediction request IDs to the actual recording; update these references when your run differs.
+- Replace or verify the matching screenshots, including the fresh JSON response and live log entry, then remove the rehearsal-placeholder notice.
 
 Future proposals are a suitable replacement dataset, drift/model-version checks, reviewed dependency updates, approved staging/rollback, and availability/latency monitoring. The 2027 roadmap is a proposal, not authorization for ongoing Azure spend.
 
