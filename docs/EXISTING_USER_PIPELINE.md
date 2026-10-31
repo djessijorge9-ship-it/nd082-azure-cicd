@@ -1,109 +1,34 @@
-# Existing-user hosted CI/CD variant
+# Azure Pipelines configuration
 
-`azure-pipelines-existing-user.yml` runs CI, test publication and packaging in
-one bounded Ubuntu 24.04 Microsoft-hosted job without an Azure login. Azure
-authentication, deployment and prediction require an explicit opt-in and a
-successful main-branch, non-PR run. The
-original `azure-pipelines.yml` is retained for environments with an authorized
-Azure Resource Manager service connection. Its unconfigured definition 1 was
-disabled in the historical `nd082-dj-20261025` organization; this status refers
-to that older organization. A configured YAML file alone is not deployment evidence.
+`azure-pipelines-existing-user.yml` runs on Microsoft-hosted Ubuntu 24.04 and reads the GitHub repository through its GitHub App connection.
 
-The separate five-minute `azure-pipelines-probe.yml` is CI only. Its successful
-historical run established that the old organization had working Microsoft-hosted
-capacity; it does not satisfy continuous-delivery evidence.
+## CI
 
-## Private inputs and approval
+Push and pull-request events run Python 3.12 installation, lint, tests and runtime packaging through `make all`. JUnit results are published from `test-results/junit.xml` and `dist/app.zip` is published as `app-source`.
 
-- `approvedContextBase64`: secret pipeline variable containing only the verified
-  scope JSON, encoded as base64. This includes the username hash, exact tenant and
-  subscription, exact writable group, exact approved read-only billing metadata
-  and `app_service_name`. It contains no access pass, password or token. Keep its
-  value out of source, artifacts and public evidence.
-- `webAppName`: the actual approved existing app name.
-- `allowDeviceCodeBootstrap`: false by default. Set true only for the specific
-  approved hosted run after the account owner authorizes authenticating the
-  provided training identity on that temporary Microsoft-hosted worker.
+## Deployment inputs
 
-The authentication task displays the standard Microsoft Azure CLI device-code
-instructions. An authorized operator opens the official Microsoft page, verifies
-the app and signs in as the exact provided lab user. The subsequent guard verifies
-the username hash, tenant, subscription, exact group IDs/names/regions and separate
-App Service target region before any deployment. It never prints private scope
-metadata or tokens. A wrong remembered account fails the guard.
+| Input | Purpose |
+| --- | --- |
+| `approvedContextBase64` | Secret variable containing the base64-encoded classroom scope JSON |
+| `webAppName` | Existing App Service name from that scope configuration |
+| `allowDeviceCodeBootstrap` | Boolean parameter, false by default; true enables device authentication and deployment |
 
-The revised YAML performs CI before the optional login. With the opt-in false,
-CI can complete without requesting Azure authentication. With it true, both
-authentication and delivery are restricted to successful main-branch, non-PR
-runs. Every fresh delivery worker requires the attended training-user login;
-this is not unattended Azure deployment.
+The scope JSON contains the username hash, tenant/subscription IDs, assigned writable group, exact read-only billing group and `app_service_name`. Store its value outside source and artifacts.
 
-The Azure CLI profile and decoded context live only under the job's temporary
-directory. An `always()` cleanup task removes them after the job, and the hosted
-worker is discarded by Azure Pipelines. Checkout does not persist repository
-credentials. Only the tested public runtime archive is published as an artifact.
+## Deployment flow
 
-The deployment script updates an existing app only, checks its private approved
-name and refuses to proceed unless SCM and FTP basic publishing authentication
-remain disabled. Current Azure CLI uses Microsoft Entra authentication for
-deployment; no new service principal, role assignment, service connection, PAT,
-agent registration or extra VM is required by this variant.
+Authentication and deployment require successful CI, main, a non-PR run and `allowDeviceCodeBootstrap=true`. The Azure CLI device sign-in authenticates the assigned classroom account. The guard then checks the identity, subscription, group IDs/locations and app name.
 
-The current approved group's metadata location is `southcentralus`, compared
-with `eastus` in the 25 October assignment; the App Service target is `eastus2`.
-The private baseline includes only the exact independently approved writable
-group and read-only billing group. A previous assignment's context must not be reused.
+`scripts/deploy_existing_training_app.sh` updates the existing app using Microsoft Entra authentication and disabled SCM/FTP basic publishing authentication. It uses `--track-status false`, then requires HTTPS `/health` status `ready` within 180 seconds and a successful prediction response.
 
-Deployment uses `--track-status false` because the observed Linux startup tracker
-lagged behind the completed Kudu deployment. A separate HTTPS `/health` gate must
-report JSON status `ready` within 180 seconds, followed by the unchanged fresh
-prediction check. These checks remain failure gates.
+The Azure profile and decoded context are written to the hosted job's temporary directory. The final `always()` step removes them. Repository credentials are not persisted by checkout.
 
-The earlier verified build 2 read a reviewed snapshot from private Azure Repos.
-That manual mirror did not establish a GitHub synchronization webhook. The
-approved GitHub App is now installed for this repository only and mapped to the
-existing organization/project. Direct GitHub-source definition 2 is configured
-to this YAML, with private scope/app variables saved. GitHub Actions run 13 passed
-for revision `96d91f458890d39bcef866b97a10e44248e6cb6d`. Direct-source automatic
-Individual CI build 3 / `20261031.1` then succeeded at
-`d15af0f8f617ea3b6cfaa5cf90b027cb594311b7`: 51/51 Passed in 1.816 seconds,
-one artifact and 56 seconds overall. This verifies automatic GitHub integration.
-GitHub Actions run 14 passed at the same source: 51 passed in 1.27 seconds,
-3,138-byte package, two artifacts and 39 seconds overall. Same-source attended
-delivery build 5 / `20261031.3` also succeeded. Keep automatic CI and explicitly
-opted-in delivery as distinct execution records.
+## Verified execution
 
-## Verified full execution
+For source `d15af0f8f617ea3b6cfaa5cf90b027cb594311b7` on 31 October 2026:
 
-Current [full direct GitHub-source build 5](https://dev.azure.com/nd082-cicd-dj-20261031/ND082-CICD/_build/results?buildId=5)
-succeeded at `d15af0f8f617ea3b6cfaa5cf90b027cb594311b7` on 31 October 2026:
-51/51 Passed, zero unreported, 1.600s test duration, one artifact, 3m13s overall
-and 3m7s job. Its attended login/scope check, deployment, readiness, JSON
-prediction and worker-authentication cleanup all completed. Prediction was
-`30.211093795690005`, request `ed25992d38834124b1de8c54aa58f542`.
-Only worker login state was removed; the F1 app/plan remain for the bounded
-human-recording session. The human YouTube video is still pending.
+- [Build 3](https://dev.azure.com/nd082-cicd-dj-20261031/ND082-CICD/_build/results?buildId=3) ran automatically from GitHub: 51/51 Passed, one artifact and 56s overall.
+- [Build 5](https://dev.azure.com/nd082-cicd-dj-20261031/ND082-CICD/_build/results?buildId=5) completed the deployment flow: 51/51 Passed in 1.600s, zero unreported, one artifact, 3m13s overall and 3m7s job.
 
-Earlier on 31 October 2026, [full mirror build 2](https://dev.azure.com/nd082-cicd-dj-20261031/ND082-CICD/_build/results?buildId=2)
-in the current private `ND082-CICD` project succeeded for baseline source
-`0519833c819252ea70c4e6a36d05d25a37264333`. It ran from 15:22:56 to 15:26:41 UTC;
-all tasks passed, including tests, artifact publication, Entra deployment,
-readiness, fresh prediction and removal of worker credentials. Its prediction
-was `30.211093795690005`, request ID `a194c0ed5bf14a5f8b69543dbbcaaaa9`.
-The corresponding Cloud Shell clone and GitHub Actions run 12 each passed 51 tests.
-Those reference results precede the verified direct-source revision. The required
-replacement human YouTube screencast remains pending: 1–5 minutes, readable
-1080p+ at 16:9, clear audio, the full login-to-prediction workflow and streamed
-logs from the deployed application.
-
-Historical [full run 3](https://dev.azure.com/nd082-dj-20261025/ND082-CICD/_build/results?buildId=3)
-completed successfully on 25 October 2026. Azure source
-`17bdad0f615507a8d0e68e1585df042dd7918ba9` corresponds to public snapshot
-`3fc837af903e12ce98f527539a11848cfe37ae1a`. All steps passed, including
-authentication/scope validation, make all, publication, Entra deployment,
-deployed prediction and removal of the temporary login cache.
-
-Official APIs independently read back Test Run 3 linked to Build 3, 48 individual
-Passed case results, and one app-source PipelineArtifact. The Build Summary UI's
-Get started/0 published presentation was inconsistent with those actual records.
-See evidence/azure-pipelines-run3-summary.json for the exact observation.
+The deployment returned `30.211093795690005` with request ID `ed25992d38834124b1de8c54aa58f542` after application health became ready.
