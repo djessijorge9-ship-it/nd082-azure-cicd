@@ -91,14 +91,21 @@ prediction and matching request ID must appear in the app's log stream.
    organization/project. Direct GitHub-source definition 2 is configured to
    `azure-pipelines-existing-user.yml` with its private variables saved; GitHub
    Actions run 13 passed for revision `96d91f458890d39bcef866b97a10e44248e6cb6d`.
-   Its automatic push-triggered Azure run is not yet verified. Record that actual
-   source/run result before treating the integration as complete.
+   The subsequent automatic Individual CI build 3 / `20261031.1` succeeded at
+   `d15af0f8f617ea3b6cfaa5cf90b027cb594311b7`: 51/51 Passed in 1.816 seconds,
+   one artifact, 56 seconds overall. GitHub Actions run 14 passed at the same source:
+   51 passed in 1.27 seconds, a 3,138-byte runtime package, two artifacts and 39
+   seconds overall.
 3. Configure `azure-pipelines-existing-user.yml` with the verified context as the
    secret `approvedContextBase64` variable and the existing `webAppName`. Keep
    these values outside source. The revised YAML always runs CI/JUnit/packaging
    before optional authentication. Explicitly queue an attended delivery with
    `allowDeviceCodeBootstrap=true` only after authentication is authorized;
    authentication and deployment also require successful CI, main and a non-PR run.
+   Same-source opted-in build 5 / `20261031.3` succeeded: 51/51 Passed in 1.600
+   seconds, zero unreported, one artifact, 3m13s overall and 3m7s job. Its actual
+   login/scope check, deployment, readiness, prediction and worker-login cleanup
+   completed. Automatic CI success and full delivery remain separate evidence.
 4. Complete Microsoft's device login as the exact provided training user. The
    private guard must pass before deployment. Inspect full tests, actual published
    cases, artifact, Entra deployment, live prediction and token-cache removal.
@@ -137,6 +144,10 @@ The latest retained Cloud Shell request at 16:11:01 UTC returned prediction
 `30.211093795690005`, request ID `9af7c43087a842b093df42e002c9bf0c`.
 The current live-stream screenshot contains the same full ID and value, and the
 App Service screenshot shows Running, Healthy runtime, Linux Python 3.12 and F1.
+The later full GitHub-source build 5 returned prediction `30.211093795690005`,
+request ID `ed25992d38834124b1de8c54aa58f542`, after completed deployment and
+HTTPS health readiness. Its cleanup log explicitly confirms removal of job-local
+Azure authentication state; it does not claim app/plan deletion.
 The F1 app is temporarily active for the bounded recording session. The required
 replacement human-recorded screencast remains pending; the earlier narrated
 screenshot walkthrough is archival. Record the actual operator workflow from
@@ -149,7 +160,7 @@ Update dated evidence records and README with actual observed results, links,
 and screenshots. The workbook's supplied-template first tab contains the current
 31 October plan; its two other tabs preserve the 25 October history. The CSV and
 board screenshot remain historical, with original/revised estimates held at 6/7
-hours. Keep their old Done statuses distinct from current pending recording and
-integration verification. Run any load
+hours. Keep their old Done statuses distinct from the current pending human
+recording. Direct-source CI and delivery are now verified. Run any load
 test solely against the authorized training app. Remove only resources created
 for this project after evidence is saved; never delete the shared resource group.

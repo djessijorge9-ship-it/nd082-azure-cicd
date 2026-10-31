@@ -3,7 +3,7 @@
 <rect width="1040" height="620" fill="#f8fafc"/>
 <g font-family="Arial,sans-serif" fill="#102b46">
 <text x="35" y="42" font-size="25" font-weight="bold">CI/CD workflow and verification status</text>
-<text x="35" y="69" font-size="15">Mirror build 2 verified. Direct GitHub-source definition 2 configured; its push-triggered run is pending.</text>
+<text x="35" y="69" font-size="15">Direct GitHub CI build 3 and attended delivery build 5 passed at d15af0f. The human demonstration is pending.</text>
 <g fill="white" stroke="#245d89" stroke-width="2">
 <rect x="35" y="110" width="200" height="90" rx="10"/>
 <rect x="310" y="110" width="280" height="90" rx="10"/>
@@ -14,12 +14,12 @@
 <rect x="665" y="465" width="335" height="95" rx="10"/>
 </g>
 <g font-size="17" text-anchor="middle">
-<text x="135" y="145" font-weight="bold">Public GitHub source</text><text x="135" y="176">Revision 96d91f4</text>
+<text x="135" y="145" font-weight="bold">Public GitHub source</text><text x="135" y="176">Verified d15af0f</text>
 <text x="450" y="145" font-weight="bold">GitHub Actions CI</text><text x="450" y="176">Lint → tests → package → badge</text>
 <text x="832" y="145" font-weight="bold">Earlier Azure Repos mirror</text><text x="832" y="176">Build 2 verified / source 0519833</text>
 <text x="135" y="326" font-weight="bold">Azure Cloud Shell</text><text x="135" y="355">Clone / make all</text><text x="135" y="384">Prediction / log proof</text>
 <text x="450" y="326" font-weight="bold">Attended Microsoft login</text><text x="450" y="355" font-size="15">Only opted-in main/non-PR runs</text><text x="450" y="384">Exact scope / job-local cache</text>
-<text x="832" y="310" font-weight="bold">Azure Pipelines CI / opt-in CD</text><text x="832" y="338" font-size="15">CI first; direct-source run pending</text><text x="832" y="366">51 tests → JUnit / artifact</text><text x="832" y="394" font-size="15">Main/non-PR opt-in → login + CD</text>
+<text x="832" y="310" font-weight="bold">Azure Pipelines CI / opt-in CD</text><text x="832" y="338" font-size="15">Automatic CI 3 / attended CD 5 passed</text><text x="832" y="366">51 tests → JUnit / artifact</text><text x="832" y="394" font-size="15">Entra CD → health / predict → cleanup</text>
 <text x="832" y="494" font-weight="bold">Azure App Service Linux F1</text><text x="832" y="521">Gunicorn → Flask → model</text><text x="832" y="548">HTTPS /health and /predict</text>
 </g>
 <g stroke="#245d89" stroke-width="2" fill="none" marker-end="url(#arrow)">
@@ -29,6 +29,6 @@
 <path d="M135,405 V513 H663"/>
 </g>
 <path d="M35,155 H18 V260 H1018 V347 H1002" stroke="#9b6a12" stroke-width="2" stroke-dasharray="8 5" fill="none" marker-end="url(#arrow)"/>
-<text x="310" y="245" font-size="15" fill="#805615">Direct source: approved App / definition 2 configured; triggered run pending</text>
+<text x="310" y="245" font-size="15" fill="#805615">Direct GitHub source verified: automatic CI 3 + attended delivery 5</text>
 <text x="35" y="595" font-size="14">CI needs no Azure login. Deployment uses attended Entra login; basic publishing auth stays disabled. No ARM connection or PAT.</text>
 </g></svg>

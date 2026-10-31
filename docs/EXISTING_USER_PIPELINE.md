@@ -64,20 +64,34 @@ That manual mirror did not establish a GitHub synchronization webhook. The
 approved GitHub App is now installed for this repository only and mapped to the
 existing organization/project. Direct GitHub-source definition 2 is configured
 to this YAML, with private scope/app variables saved. GitHub Actions run 13 passed
-for revision `96d91f458890d39bcef866b97a10e44248e6cb6d`; an automatic Azure
-push-triggered run has not yet been verified. Retain its source and execution result
-before claiming that integration is complete.
+for revision `96d91f458890d39bcef866b97a10e44248e6cb6d`. Direct-source automatic
+Individual CI build 3 / `20261031.1` then succeeded at
+`d15af0f8f617ea3b6cfaa5cf90b027cb594311b7`: 51/51 Passed in 1.816 seconds,
+one artifact and 56 seconds overall. This verifies automatic GitHub integration.
+GitHub Actions run 14 passed at the same source: 51 passed in 1.27 seconds,
+3,138-byte package, two artifacts and 39 seconds overall. Same-source attended
+delivery build 5 / `20261031.3` also succeeded. Keep automatic CI and explicitly
+opted-in delivery as distinct execution records.
 
 ## Verified full execution
 
-On 31 October 2026, [full mirror build 2](https://dev.azure.com/nd082-cicd-dj-20261031/ND082-CICD/_build/results?buildId=2)
+Current [full direct GitHub-source build 5](https://dev.azure.com/nd082-cicd-dj-20261031/ND082-CICD/_build/results?buildId=5)
+succeeded at `d15af0f8f617ea3b6cfaa5cf90b027cb594311b7` on 31 October 2026:
+51/51 Passed, zero unreported, 1.600s test duration, one artifact, 3m13s overall
+and 3m7s job. Its attended login/scope check, deployment, readiness, JSON
+prediction and worker-authentication cleanup all completed. Prediction was
+`30.211093795690005`, request `ed25992d38834124b1de8c54aa58f542`.
+Only worker login state was removed; the F1 app/plan remain for the bounded
+human-recording session. The human YouTube video is still pending.
+
+Earlier on 31 October 2026, [full mirror build 2](https://dev.azure.com/nd082-cicd-dj-20261031/ND082-CICD/_build/results?buildId=2)
 in the current private `ND082-CICD` project succeeded for baseline source
 `0519833c819252ea70c4e6a36d05d25a37264333`. It ran from 15:22:56 to 15:26:41 UTC;
 all tasks passed, including tests, artifact publication, Entra deployment,
 readiness, fresh prediction and removal of worker credentials. Its prediction
 was `30.211093795690005`, request ID `a194c0ed5bf14a5f8b69543dbbcaaaa9`.
 The corresponding Cloud Shell clone and GitHub Actions run 12 each passed 51 tests.
-These results precede the new direct-source integration revision. The required
+Those reference results precede the verified direct-source revision. The required
 replacement human YouTube screencast remains pending: 1–5 minutes, readable
 1080p+ at 16:9, clear audio, the full login-to-prediction workflow and streamed
 logs from the deployed application.
