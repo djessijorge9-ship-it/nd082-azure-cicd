@@ -1,4 +1,4 @@
-# Full CI/CD using an explicitly approved, interactive existing-user bootstrap.
+# Automatic CI with deployment through an explicitly approved existing-user bootstrap.
 # Scope metadata is a private pipeline variable; no identities or credentials are in source.
 parameters:
   - name: allowDeviceCodeBootstrap
@@ -25,6 +25,22 @@ jobs:
       - task: UsePythonVersion@0
         inputs:
           versionSpec: '3.12'
+      - bash: |
+          set -euo pipefail
+          python3 -m venv .venv
+          source .venv/bin/activate
+          make all
+        displayName: Full install, lint, tests and runtime packaging
+      - task: PublishTestResults@2
+        condition: succeededOrFailed()
+        inputs:
+          testResultsFormat: JUnit
+          testResultsFiles: '$(System.DefaultWorkingDirectory)/test-results/junit.xml'
+          failTaskOnFailedTests: true
+          failTaskOnMissingResultsFile: true
+          failTaskOnFailureToPublishResults: true
+      - publish: dist/app.zip
+        artifact: app-source
       - ${{ if eq(parameters.allowDeviceCodeBootstrap, true) }}:
           - bash: |
               set -euo pipefail
@@ -44,6 +60,7 @@ jobs:
               az account set --subscription "$subscription_id"
               python3 scripts/verify_training_context.py
             displayName: Approved existing-user device login and exact scope check
+            condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
             timeoutInMinutes: 15
             env:
               APPROVED_CONTEXT_BASE64: $(approvedContextBase64)
@@ -52,39 +69,18 @@ jobs:
               AZURE_RESOURCE_GROUP: Azuredevops
               AZURE_LOCATION: eastus2
               AZURE_CORE_LOGIN_EXPERIENCE_V2: 'off'
-      - ${{ else }}:
           - bash: |
-              echo 'Device-code bootstrap must be explicitly approved and opted in for this hosted run.'
-              exit 2
-            displayName: Require explicit authorization bootstrap opt-in
-      - bash: |
-          set -euo pipefail
-          python3 -m venv .venv
-          source .venv/bin/activate
-          make all
-        displayName: Full install, lint, tests and runtime packaging
-      - task: PublishTestResults@2
-        condition: succeededOrFailed()
-        inputs:
-          testResultsFormat: JUnit
-          testResultsFiles: '$(System.DefaultWorkingDirectory)/test-results/junit.xml'
-          failTaskOnFailedTests: true
-          failTaskOnMissingResultsFile: true
-          failTaskOnFailureToPublishResults: true
-      - publish: dist/app.zip
-        artifact: app-source
-      - bash: |
-          set -euo pipefail
-          source .venv/bin/activate
-          bash scripts/deploy_existing_training_app.sh
-        displayName: Entra deployment and live prediction smoke test
-        condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
-        env:
-          AZURE_CONFIG_DIR: $(azureConfigDir)
-          AZURE_CONTEXT_FILE: $(azureContextFile)
-          AZURE_RESOURCE_GROUP: Azuredevops
-          AZURE_LOCATION: eastus2
-          APP_NAME: $(webAppName)
+              set -euo pipefail
+              source .venv/bin/activate
+              bash scripts/deploy_existing_training_app.sh
+            displayName: Entra deployment and live prediction smoke test
+            condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+            env:
+              AZURE_CONFIG_DIR: $(azureConfigDir)
+              AZURE_CONTEXT_FILE: $(azureContextFile)
+              AZURE_RESOURCE_GROUP: Azuredevops
+              AZURE_LOCATION: eastus2
+              APP_NAME: $(webAppName)
       - bash: |
           python3 - <<'PY'
           import os, shutil
