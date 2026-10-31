@@ -6,7 +6,7 @@ A Flask machine-learning API deployed to Linux Azure App Service. GitHub Actions
 
 ## Architecture
 
-![CI/CD architecture](docs/architecture.svg)
+![CI/CD architecture](docs/architecture.svg?v=cdabdae)
 
 The GitHub App connects the repository directly to Azure Pipelines. Source changes run CI on Microsoft-hosted Ubuntu 24.04. The pipeline publishes JUnit results and `app-source`, then runs deployment when `allowDeviceCodeBootstrap=true` on a successful main-branch, non-PR run. Deployment uses Microsoft Entra device authentication and validates the classroom identity, subscription, resource group and app name.
 
@@ -76,12 +76,14 @@ Results recorded on 31 October 2026 for source `d15af0f8f617ea3b6cfaa5cf90b027cb
 | [Automatic Azure CI build 3](https://dev.azure.com/nd082-cicd-dj-20261031/ND082-CICD/_build/results?buildId=3) | Individual CI from GitHub; 51/51 Passed in 1.816s; one artifact; 56s overall |
 | [Azure delivery build 5](https://dev.azure.com/nd082-cicd-dj-20261031/ND082-CICD/_build/results?buildId=5) | 51/51 Passed in 1.600s; zero unreported; one artifact; 3m13s overall / 3m7s job; deployment, readiness and prediction passed |
 
-Build 5 returned:
+## Prediction
+
+A fresh Cloud Shell request on 31 October 2026 at 23:30:56 UTC returned:
 
 ```json
 {
   "prediction": [30.211093795690005],
-  "request_id": "ed25992d38834124b1de8c54aa58f542"
+  "request_id": "b98d27b607d44cc286319330a3c0cc60"
 }
 ```
 
