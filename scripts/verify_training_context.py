@@ -21,7 +21,8 @@ def verify_context(expected, account, groups, resource_group, location):
     if not expected.get("identity_matches_current_lab") or len(expected_groups) != 1:
         raise ContextError("An independently verified single-group lab context is required")
     approved_group = expected_groups[0]
-    if (approved_group.get("name"), approved_group.get("location")) != ("Azuredevops", "eastus"):
+    if (approved_group.get("name") != "Azuredevops"
+            or approved_group.get("location") not in ("eastus", "southcentralus")):
         raise ContextError("Approved context is not the current Project 2 lab")
     if resource_group != "Azuredevops":
         raise ContextError("Refusing a group outside the exact approved lab")
