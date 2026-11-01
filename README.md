@@ -119,7 +119,7 @@ Prediction and streamed application logs:
 
 ## Demonstration
 
-[Workflow demonstration](https://youtu.be/8N4D3xHqvqo)
+[Workflow demonstration](https://youtu.be/EqzMtMJreUw)
 
 ## Model and API
 
