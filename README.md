@@ -128,6 +128,20 @@ az webapp log tail --resource-group "$AZURE_RESOURCE_GROUP" --name "$APP_NAME"
 
 Compare the response's `request_id` and prediction with the matching log entry.
 
+## Workflow demonstration
+
+[Workflow demonstration](https://youtu.be/h-94cK-0wSU)
+
+| Time | Step |
+| --- | --- |
+| 0:00 | Azure Cloud Shell checkout and continuous integration |
+| 0:44 | Homepage source change, commit and push |
+| 1:09 | Push-triggered GitHub Actions build |
+| 1:35 | Automatic Azure build and deployment |
+| 2:03 | Updated live App Service homepage |
+| 2:15 | Fresh JSON prediction from Cloud Shell |
+| 2:31 | Matching streamed prediction log |
+
 ## Model and API
 
 The model takes `CHAS, RM, TAX, PTRATIO, B, LSTAT` in that order and uses raw feature values. `scripts/train_model.py` reproduces the supplied notebook with scikit-learn 1.5.1 and seed 7. The split contains 404 training and 102 test rows; held-out MSE is `39.95883743552935`. Model versions, features and hashes are in `Housing_price_model/metadata.json`.
