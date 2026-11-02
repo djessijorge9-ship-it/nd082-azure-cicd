@@ -70,7 +70,8 @@ def create_app(model_path=DEFAULT_MODEL):
 
     @service.get("/")
     def home():
-        return "<h3>Sklearn Prediction Home</h3><p>Educational housing model: POST /predict</p>"
+        return ("<h3>Sklearn Prediction Home - Continuous Delivery</h3>"
+                "<p>Educational housing model: POST /predict</p>")
 
     @service.get("/health")
     def health():
