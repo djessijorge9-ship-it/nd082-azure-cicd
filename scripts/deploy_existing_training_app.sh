@@ -24,30 +24,5 @@ az webapp deploy --name "$APP_NAME" --resource-group "$AZURE_RESOURCE_GROUP" \
   --src-path dist/app.zip --type zip --track-status false --output none
 app_host="$(az webapp show --name "$APP_NAME" --resource-group "$AZURE_RESOURCE_GROUP" \
   --query defaultHostName --output tsv)"
-python3 - "$app_host" <<'PY'
-import json
-import sys
-import time
-from urllib.error import URLError
-from urllib.request import urlopen
-
-deadline = time.monotonic() + 180
-health_url = "https://" + sys.argv[1] + "/health"
-while time.monotonic() < deadline:
-    try:
-        remaining = max(1, deadline - time.monotonic())
-        with urlopen(health_url, timeout=min(15, remaining)) as response:
-            health = json.load(response)
-        if isinstance(health, dict) and health.get("status") == "ready":
-            print("Application health ready")
-            break
-    except (URLError, TimeoutError, ValueError):
-        pass
-    remaining = deadline - time.monotonic()
-    if remaining > 0:
-        print("Waiting for application health readiness", flush=True)
-        time.sleep(min(5, remaining))
-else:
-    raise SystemExit("Application did not become ready within 180 seconds")
-PY
-python3 scripts/predict.py "https://${app_host}"
+python3 scripts/predict.py "https://${app_host}" \
+  --wait-for-heading 'Sklearn Prediction Home - Continuous Delivery'
