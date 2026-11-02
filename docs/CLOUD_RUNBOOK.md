@@ -4,7 +4,15 @@
 
 Use Bash in the supplied Azure Cloud Shell and authenticate to the assigned subscription. The private scope JSON contains the classroom identity hash, tenant, subscription, writable group, read-only billing group and app name. Store it outside the repository.
 
-Set `AZURE_CONTEXT_FILE` to that file. The assigned resource group is `Azuredevops` with metadata location `southcentralus`; the App Service target is `eastus2`. The target service is Linux Python 3.12 on F1.
+Set `AZURE_CONTEXT_FILE` to that file. The assigned resource group is `Azuredevops` with metadata location `westeurope`; the App Service target is `eastus2`. The target service is Linux Python 3.12 on F1, named `nd082-dj-cicd-1102-r787`.
+
+## Verified execution - 2 November 2026
+
+The original-heading application was cloned and built in the supplied Cloud Shell: 59 tests passed in 1.74 seconds and `dist/app.zip` was 3,138 bytes. The subsequent homepage-only commit was `722102a0cd6fabf963078a03ac77b7fb27cbe479`.
+
+Its push triggered [GitHub Actions 15](https://github.com/djessijorge9-ship-it/nd082-azure-cicd/actions/runs/41380035852) and [Azure Pipelines 20261102.1](https://dev.azure.com/nd082-cicd-dj-20261102/ND082-CICD/_build/results?buildId=1). GitHub Actions passed 59 tests in 1.58 seconds and packaged the 3,158-byte changed app. Azure's Individual CI run completed Build and Deploy for the same source.
+
+After the changed heading appeared on the live app, a separate Cloud Shell request returned prediction `30.211093795690005` with request ID `17ca1f3a799d4a7dbba3ade30b5ae9b7`. The application log at `2026-11-02T03:21:34.7443324Z` records that ID with `rows=1`; the following `POST /predict` access entry returned HTTP 200. The [README screenshots](../README.md#verified-workflow---2-november-2026) show the clone, tests, change, automatic runs, live page, JSON and matching stream.
 
 ## Build
 
@@ -16,15 +24,17 @@ source .venv/bin/activate
 make all
 ```
 
+Use a new directory name if the clone directory already exists. Cloud Shell sessions can reconnect without retaining earlier files; confirm the source directory, active environment and private configuration path in each session.
+
 ## Create the application
 
 Set the app name to the value in the private configuration:
 
 ```bash
-export AZURE_CONTEXT_FILE="$HOME/project02-approved-context-1031.json"
+export AZURE_CONTEXT_FILE="$HOME/project02-approved-context-1102-v2.json"
 export AZURE_RESOURCE_GROUP=Azuredevops
 export AZURE_LOCATION=eastus2
-export APP_NAME=nd082-dj-cicd-1031-r779
+export APP_NAME=nd082-dj-cicd-1102-r787
 python3 scripts/verify_training_context.py
 python3 -c 'import json,os; assert os.environ["APP_NAME"] == json.load(open(os.environ["AZURE_CONTEXT_FILE"]))["app_service_name"]'
 bash commands.sh
@@ -32,33 +42,36 @@ bash commands.sh
 
 `commands.sh` runs the build/tests and creates the App Service using `az webapp up -n "$APP_NAME"` with the explicit group, plan, F1 SKU, Python runtime and disabled basic authentication. It configures HTTPS, build automation, startup and logging.
 
-## Configure Azure Pipelines
+## Configure automatic Azure delivery
 
-1. Connect this GitHub repository to Azure Pipelines through the repository-scoped GitHub App.
-2. Select `azure-pipelines-existing-user.yml`.
-3. Set secret variable `approvedContextBase64` to the base64-encoded scope JSON and `webAppName` to the configured app.
-4. Source changes run CI, JUnit publication and packaging. To deploy, run main with `allowDeviceCodeBootstrap=true` and complete the Azure CLI device sign-in.
-5. The identity/scope guard must pass before deployment. Authentication and deployment run only after successful CI on main and outside pull requests.
+1. Connect only this repository through the Azure Pipelines GitHub App and select `azure-pipelines.yml` in [ND082-CICD](https://dev.azure.com/nd082-cicd-dj-20261102/ND082-CICD).
+2. Set `azureServiceConnection=nd082-app-wif`, `webAppName=nd082-dj-cicd-1102-r787` and `webAppUrl=https://nd082-dj-cicd-1102-r787.azurewebsites.net`.
+3. Authorize this pipeline to use the verified `nd082-app-wif` connection. The associated user-assigned identity `nd082-cicd-1102-deployer` has Website Contributor on the target app.
+4. Push the intended source change to main. GitHub Actions runs CI, and Azure Pipelines runs Build followed by Deploy after success. Pull requests run Build.
+5. Inspect the automatically triggered runs. Match their source commit to the pushed commit, then inspect tests, the published package, deployment and readiness output.
 
-The deployment script uses Entra authentication, waits for completed deployment, requires `/health` JSON status `ready` within 180 seconds and sends a prediction request. SCM and FTP basic publishing authentication remain disabled.
+`AzureWebApp@1` deploys through workload identity federation. The subsequent smoke test requires `/health` status `ready` and the full homepage heading `<h3>Sklearn Prediction Home - Continuous Delivery</h3>` before sending a prediction. Confirm the changed heading in the live HTTPS homepage as well as the deployment logs. SCM and FTP basic publishing authentication remain disabled.
 
 ## Predict and stream logs
 
+Start the live stream in one Cloud Shell session:
+
 ```bash
-export APP_URL="https://$(az webapp show --resource-group "$AZURE_RESOURCE_GROUP" --name "$APP_NAME" --query defaultHostName -o tsv)"
-bash make_predict_azure_app.sh
-az webapp log config --resource-group "$AZURE_RESOURCE_GROUP" --name "$APP_NAME" --docker-container-logging filesystem -o none
+export AZURE_RESOURCE_GROUP=Azuredevops
+export APP_NAME=nd082-dj-cicd-1102-r787
 az webapp log tail --resource-group "$AZURE_RESOURCE_GROUP" --name "$APP_NAME"
 ```
 
-While the stream runs, send another prediction from a second session. Match the complete `request_id` and prediction value in the response and log line. Use Ctrl+C to stop the stream.
+From a second session in the project source directory with its virtual environment active:
 
-## Execution results
+```bash
+export APP_URL=https://nd082-dj-cicd-1102-r787.azurewebsites.net
+python scripts/predict.py "$APP_URL" --wait-for-heading '<h3>Sklearn Prediction Home - Continuous Delivery</h3>'
+```
 
-On 31 October 2026, source `d15af0f8f617ea3b6cfaa5cf90b027cb594311b7` passed:
+Match the complete `request_id`, prediction value, processed row count and HTTP status in the fresh response and live log. Keep a deployment smoke request separate from this fresh verification request. Use Ctrl+C to stop streaming.
 
-- GitHub Actions run 14: 51 tests, 1.27s test time, two artifacts.
-- Automatic GitHub-source Azure build 3: 51/51 Passed, 1.816s test time, one artifact.
-- Full Azure build 5: 51/51 Passed, 1.600s test time, zero unreported, one artifact and 3m13s overall.
+## Cleanup
 
-Build 5 completed deployment, readiness and prediction `30.211093795690005` with request `ed25992d38834124b1de8c54aa58f542`. The pipeline removes its job-local Azure profile and private context after execution.
+After the live demonstration and evidence are verified, remove the project-owned App Service, its sole-use F1 plan and deployment identity/role assignment. Verify exact ownership and resource IDs first. Preserve the provided resource group, read-only billing group and any shared resources.
+

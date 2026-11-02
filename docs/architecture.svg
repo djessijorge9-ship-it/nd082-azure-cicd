@@ -3,7 +3,7 @@
 <rect width="1040" height="620" fill="#f8fafc"/>
 <g font-family="Arial,sans-serif" fill="#102b46">
 <text x="35" y="42" font-size="25" font-weight="bold">CI/CD architecture</text>
-<text x="35" y="69" font-size="15">Source changes run CI; main-branch deployment uses an explicit parameter and Azure device authentication.</text>
+<text x="35" y="69" font-size="15">Source pushes run CI and automatic main/master deployment through workload identity federation.</text>
 <g fill="white" stroke="#245d89" stroke-width="2">
 <rect x="35" y="110" width="200" height="90" rx="10"/>
 <rect x="310" y="110" width="280" height="90" rx="10"/>
@@ -17,19 +17,20 @@
 <text x="135" y="145" font-weight="bold">GitHub repository</text><text x="135" y="176">Push / pull request</text>
 <text x="450" y="145" font-weight="bold">GitHub Actions CI</text><text x="450" y="176">Install / lint / test / package</text>
 <text x="832" y="145" font-weight="bold">GitHub App connection</text><text x="832" y="176">Repository-scoped source access</text>
-<text x="135" y="326" font-weight="bold">Azure Cloud Shell</text><text x="135" y="355">Clone / make all</text><text x="135" y="384">Prediction / live logs</text>
-<text x="450" y="326" font-weight="bold">Azure device sign-in</text><text x="450" y="355" font-size="15">Main / non-PR / deployment opt-in</text><text x="450" y="384">Identity and scope validation</text>
-<text x="832" y="310" font-weight="bold">Azure Pipelines</text><text x="832" y="338">CI / JUnit / app-source</text><text x="832" y="366" font-size="15">Entra deployment / health / prediction</text><text x="832" y="394" font-size="15">Temporary worker profile removal</text>
-<text x="832" y="494" font-weight="bold">Azure App Service Linux F1</text><text x="832" y="521">Gunicorn / Flask / model</text><text x="832" y="548">HTTPS /health and /predict</text>
+<text x="135" y="322" font-weight="bold">Azure Cloud Shell</text><text x="135" y="347" font-size="15">Clone / make all</text><text x="135" y="371" font-size="15">Edit / commit / push</text><text x="135" y="395" font-size="15">Prediction / live logs</text>
+<text x="450" y="326" font-weight="bold">Managed identity + WIF</text><text x="450" y="355" font-size="15">nd082-app-wif connection</text><text x="450" y="384" font-size="15">Website Contributor: target app</text>
+<text x="832" y="310" font-weight="bold">Azure Pipelines</text><text x="832" y="338">Build: tests / JUnit / app-source</text><text x="832" y="366" font-size="15">Deploy: AzureWebApp@1</text><text x="832" y="394" font-size="15">Health / full heading / prediction</text>
+<text x="832" y="494" font-weight="bold">Linux App Service F1 / East US 2</text><text x="832" y="521" font-size="15">nd082-dj-cicd-1102-r787</text><text x="832" y="548">HTTPS /health and /predict</text>
 </g>
 <g stroke="#245d89" stroke-width="2" fill="none" marker-end="url(#arrow)">
 <path d="M235,155 H308"/>
 <path d="M135,110 V90 H832 V108"/>
 <path d="M135,200 V293"/>
+<path d="M35,350 H18 V155 H33"/>
 <path d="M832,200 V278"/>
 <path d="M590,350 H663"/>
 <path d="M832,415 V463"/>
 <path d="M135,405 V513 H663"/>
 </g>
-<text x="35" y="595" font-size="14">Azure Pipelines performs CI before authentication. Deployment validates the configured app and requires HTTPS readiness.</text>
+<text x="35" y="595" font-size="14">Build must pass before deployment. Verify the changed live homepage and match fresh JSON to the streamed request ID.</text>
 </g></svg>
