@@ -28,18 +28,23 @@ def test_exact_verified_group_and_permitted_app_region_are_accepted(lab, app_reg
                       "resource_group_location": "eastus", "app_service_location": app_region}
 
 
-def test_exact_verified_southcentralus_group_metadata_is_accepted(lab):
+@pytest.mark.parametrize("metadata_location", ["southcentralus", "westeurope"])
+def test_exact_verified_additional_group_metadata_is_accepted(lab, metadata_location):
     expected, account, groups = deepcopy(lab)
-    expected["groups"][0]["location"] = "southcentralus"
-    groups[0]["location"] = "southcentralus"
+    expected["groups"][0]["location"] = metadata_location
+    groups[0]["location"] = metadata_location
     result = verify_context(expected, account, groups, "Azuredevops", "eastus2")
     assert result == {"verified": True, "resource_group": "Azuredevops",
-                      "resource_group_location": "southcentralus",
+                      "resource_group_location": metadata_location,
                       "app_service_location": "eastus2"}
 
 
 @pytest.mark.parametrize("approved, observed", [("eastus", "southcentralus"),
-                                                ("southcentralus", "eastus")])
+                                                ("southcentralus", "eastus"),
+                                                ("eastus", "westeurope"),
+                                                ("westeurope", "eastus"),
+                                                ("southcentralus", "westeurope"),
+                                                ("westeurope", "southcentralus")])
 def test_changed_actual_metadata_is_refused_even_between_known_lab_locations(
         lab, approved, observed):
     expected, account, groups = deepcopy(lab)
