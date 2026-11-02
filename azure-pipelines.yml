@@ -53,10 +53,11 @@ stages:
                     azureSubscription: '$(azureServiceConnection)'
                     appType: webAppLinux
                     appName: '$(webAppName)'
+                    resourceGroupName: 'Azuredevops'
                     package: '$(Pipeline.Workspace)/app-source/app.zip'
                     runtimeStack: 'PYTHON|3.12'
                     startUpCommand: 'gunicorn --bind=0.0.0.0:8000 --workers 2 --timeout 120 --access-logfile - --error-logfile - app:app'
-                - script: python scripts/predict.py "$WEB_APP_URL"
+                - script: python scripts/predict.py "$WEB_APP_URL" --wait-for-heading '<h3>Sklearn Prediction Home - Continuous Delivery</h3>'
                   displayName: Deployment prediction smoke test
                   env:
                     WEB_APP_URL: '$(webAppUrl)'
